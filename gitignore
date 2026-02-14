@@ -1,0 +1,112 @@
+# ============================================
+# SEGURIDAD - NUNCA subir estos archivos
+# ============================================
+
+# Variables de entorno y secretos
+.env
+.env.local
+.env.production
+.env.*.local
+*.properties
+!*.properties.example
+
+# Archivos de configuración con datos reales
+application.properties
+application-*.properties
+!application.properties.example
+
+# ============================================
+# BACKEND (Java/Spring Boot)
+# ============================================
+
+# Compilados
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# ============================================
+# FRONTEND (Angular/Node)
+# ============================================
+
+# Dependencias
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+.angular/
+.cache/
+
+# ============================================
+# IDEs
+# ============================================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# WebStorm
+.webstorm/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# ============================================
+# Sistema Operativo
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ============================================
+# Bases de datos locales
+# ============================================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# Logs
+# ============================================
+
+*.log
+logs/
+
+# ============================================
+# Temporal
+# ============================================
+
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
