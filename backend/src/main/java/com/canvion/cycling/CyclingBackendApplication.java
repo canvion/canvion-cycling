@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-public class CyclingApplication {
+public class CyclingBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CyclingApplication.class, args);
+        SpringApplication.run(CyclingBackendApplication.class, args);
         System.out.println("🚴 Canvion Cycling API is running!");
         System.out.println("📍 Server started on: http://localhost:8080");
     }
