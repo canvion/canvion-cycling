@@ -1,7 +1,4 @@
-version: '3.8'
-
 services:
-  # Base de datos PostgreSQL
   postgres:
     image: postgres:15-alpine
     container_name: cycling-db
@@ -11,7 +8,7 @@ services:
       POSTGRES_USER: cycling_user
       POSTGRES_PASSWORD: cycling_password_2024
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -22,7 +19,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Backend Spring Boot
   backend:
     build:
       context: ./backend
@@ -42,7 +38,6 @@ services:
     networks:
       - cycling-network
 
-  # Frontend Angular
   frontend:
     build:
       context: ./frontend
