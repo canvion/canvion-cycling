@@ -1,1 +1,85 @@
-<p>register works!</p>
+<div class="page">
+
+  <div class="card">
+
+    <!-- Logo y título -->
+    <div class="header">
+      <div class="logo">🚴</div>
+      <h1>Canvion Cycling</h1>
+      <p>Crea tu cuenta</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <!-- Nombre y apellido en la misma fila -->
+      <div class="row">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" formControlName="firstName" placeholder="Juan" />
+          <span class="field-error" *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+            Obligatorio
+          </span>
+        </div>
+
+        <div class="field">
+          <label>Apellido</label>
+          <input type="text" formControlName="lastName" placeholder="García" />
+          <span class="field-error" *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+            Obligatorio
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" formControlName="username" placeholder="juangarcia" />
+        <span class="field-error" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          Mínimo 3 caracteres
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="tu@email.com" />
+        <span class="field-error" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Email no válido
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" formControlName="password" placeholder="••••••••" />
+        <span class="field-error" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Mínimo 6 caracteres
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Confirmar contraseña</label>
+        <input type="password" formControlName="confirmPassword" placeholder="••••••••" />
+        <span class="field-error" *ngIf="registerForm.get('confirmPassword')?.touched && !passwordsMatch()">
+          Las contraseñas no coinciden
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Crear cuenta</span>
+        <span *ngIf="isLoading">Cargando...</span>
+      </button>
+
+    </form>
+
+    <!-- Link a login -->
+    <p class="login-link">
+      ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+    </p>
+
+  </div>
+
+</div>

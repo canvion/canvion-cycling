@@ -1,1 +1,58 @@
-<p>login works!</p>
+<div class="page">
+
+  <div class="card">
+
+    <!-- Logo y título -->
+    <div class="header">
+      <div class="logo">🚴</div>
+      <h1>Canvion Cycling</h1>
+      <p>Inicia sesión en tu cuenta</p>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div class="error" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="field">
+        <label>Usuario o Email</label>
+        <input
+          type="text"
+          formControlName="usernameOrEmail"
+          placeholder="tu@email.com"
+        />
+        <span class="field-error" *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched">
+          Este campo es obligatorio
+        </span>
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+        />
+        <span class="field-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+          Mínimo 6 caracteres
+        </span>
+      </div>
+
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Iniciar sesión</span>
+        <span *ngIf="isLoading">Cargando...</span>
+      </button>
+
+    </form>
+
+    <!-- Link a registro -->
+    <p class="register-link">
+      ¿No tienes cuenta? <a routerLink="/register">Regístrate</a>
+    </p>
+
+  </div>
+
+</div>
