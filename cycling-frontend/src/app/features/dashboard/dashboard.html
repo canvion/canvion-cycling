@@ -1,1 +1,98 @@
-<p>dashboard works!</p>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚴 Canvion</div>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item active">📊 Dashboard</a>
+      <a routerLink="/activities" class="nav-item">🏃 Actividades</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <span class="sidebar-user">👤 {{ username }}</span>
+      <button class="btn-logout" (click)="logout()">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="top-bar">
+      <h1>Dashboard</h1>
+      <div class="strava-buttons">
+        <button class="btn-strava" (click)="connectStrava()">🔗 Conectar Strava</button>
+        <button class="btn-sync" (click)="syncStrava()" [disabled]="isSyncing">
+          {{ isSyncing ? 'Sincronizando...' : '🔄 Sincronizar' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensaje de sincronización -->
+    <div class="sync-message" *ngIf="syncMessage">{{ syncMessage }}</div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">Cargando datos...</div>
+
+    <div *ngIf="!isLoading">
+
+      <!-- Estadísticas generales -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🏅</div>
+          <div class="stat-value">{{ totalActivities }}</div>
+          <div class="stat-label">Actividades</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📍</div>
+          <div class="stat-value">{{ totalKm.toFixed(0) }} km</div>
+          <div class="stat-label">Distancia total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-value">{{ totalHours.toFixed(0) }} h</div>
+          <div class="stat-label">Horas en movimiento</div>
+        </div>
+      </div>
+
+      <!-- Gráfico y últimas actividades -->
+      <div class="bottom-grid">
+
+        <!-- Gráfico por mes -->
+        <div class="card">
+          <h2>Actividades por mes</h2>
+          <div class="chart-container">
+            <canvas id="activityChart"></canvas>
+          </div>
+          <p class="no-data" *ngIf="totalActivities === 0">Sin datos aún</p>
+        </div>
+
+        <!-- Últimas actividades -->
+        <div class="card">
+          <div class="card-header">
+            <h2>Últimas actividades</h2>
+            <a routerLink="/activities" class="ver-todas">Ver todas →</a>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item" *ngFor="let activity of lastActivities">
+              <div class="activity-icon">
+                {{ activity.type === 'Ride' ? '🚴' : activity.type === 'Run' ? '🏃' : '🏊' }}
+              </div>
+              <div class="activity-info">
+                <span class="activity-name">{{ activity.name }}</span>
+                <span class="activity-meta">{{ formatKm(activity.distance) }} km · {{ formatTime(activity.movingTime) }}</span>
+              </div>
+              <div class="activity-date">
+                {{ activity.startDate | date:'dd/MM' }}
+              </div>
+            </div>
+            <p class="no-data" *ngIf="lastActivities.length === 0">
+              Sin actividades. ¡Sincroniza con Strava!
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+</div>
