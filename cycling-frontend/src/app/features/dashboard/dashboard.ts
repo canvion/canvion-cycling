@@ -86,7 +86,7 @@ export class Dashboard implements OnInit {
     // Datos para el gráfico por mes
     this.buildChartData();
 
-    this.calculateYearComparison();
+    this.calculateYearComparison(this.activities);
   }
 
   buildChartData(): void {
@@ -222,25 +222,37 @@ export class Dashboard implements OnInit {
     this.totalActivities = filtered.length;
     this.totalKm = filtered.reduce((sum, a) => sum + (a.distance / 1000), 0);
     this.totalHours = filtered.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
+    this.calculateYearComparison(filtered);
     this.cdr.detectChanges();
   }
 
-  calculateYearComparison(): void {
-    const currentYear = new Date().getFullYear();
-    const lastYear = currentYear - 1;
+  calculateYearComparison(filtered: Activity[]): void {
+    const now = new Date();
 
-    const thisYearData = this.activities.filter(a =>
-      new Date(a.startDate).getFullYear() === currentYear
-    );
+    let comparison: Activity[];
 
-    const lastYearData = this.activities.filter(a =>
-      new Date(a.startDate).getFullYear() === lastYear
-    );
+    if (this.selectedPeriod === 'month') {
+      // Mismo mes del año anterior
+      comparison = this.activities.filter(a => {
+        const d = new Date(a.startDate);
+        return d.getMonth() === now.getMonth() &&
+          d.getFullYear() === now.getFullYear() - 1;
+      });
+    } else if (this.selectedPeriod === 'year') {
+      // Año anterior completo
+      comparison = this.activities.filter(a =>
+        new Date(a.startDate).getFullYear() === now.getFullYear() - 1
+      );
+    } else {
+      // Todo: comparamos el año anterior vs el actual
+      comparison = this.activities.filter(a =>
+        new Date(a.startDate).getFullYear() === now.getFullYear() - 1
+      );
+    }
 
-    // Este año (solo sobreescribimos si el periodo es 'all' o 'year')
-    this.lastYearActivities = lastYearData.length;
-    this.lastYearKm = lastYearData.reduce((sum, a) => sum + (a.distance / 1000), 0);
-    this.lastYearHours = lastYearData.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
+    this.lastYearActivities = comparison.length;
+    this.lastYearKm = comparison.reduce((sum, a) => sum + (a.distance / 1000), 0);
+    this.lastYearHours = comparison.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
   }
 
 
