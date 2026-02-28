@@ -71,6 +71,44 @@
         </div>
       </div>
 
+      <!-- Métricas adicionales -->
+      <div class="extra-metrics" *ngIf="activity.averageCadence || activity.sufferScore || activity.averageTemp">
+        <h2>Métricas adicionales</h2>
+        <div class="extra-grid">
+
+          <!-- Cadencia -->
+          <div class="extra-card" *ngIf="activity.averageCadence">
+            <div class="extra-icon">🔄</div>
+            <div class="extra-value">{{ activity.averageCadence }} rpm</div>
+            <div class="extra-label">Cadencia media</div>
+            <div class="extra-badge" [class]="getCadenceClass(activity.averageCadence)">
+              {{ getCadenceLabel(activity.averageCadence) }}
+            </div>
+          </div>
+
+          <!-- Suffer Score -->
+          <div class="extra-card" *ngIf="activity.sufferScore">
+            <div class="extra-icon">💪</div>
+            <div class="extra-value">{{ activity.sufferScore }}</div>
+            <div class="extra-label">Esfuerzo (Suffer Score)</div>
+            <div class="extra-badge" [class]="getSufferClass(activity.sufferScore)">
+              {{ getSufferLabel(activity.sufferScore) }}
+            </div>
+          </div>
+
+          <!-- Temperatura -->
+          <div class="extra-card" *ngIf="activity.averageTemp">
+            <div class="extra-icon">{{ getTempIcon(activity.averageTemp) }}</div>
+            <div class="extra-value">{{ activity.averageTemp }}°C</div>
+            <div class="extra-label">Temperatura</div>
+            <div class="extra-badge" [class]="getTempClass(activity.averageTemp)">
+              {{ getTempLabel(activity.averageTemp) }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <!-- Mapa -->
       <div class="map-card" *ngIf="activity.summaryPolyline">
         <h2>Ruta</h2>

@@ -157,3 +157,61 @@
   .layout { margin-left: 0; }
   .main { padding: 60px 16px 16px 16px; } /* 60px arriba para el hamburguesa */
 }
+
+.extra-metrics {
+  margin-bottom: 24px;
+}
+
+.extra-metrics h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 16px 0;
+}
+
+.extra-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.extra-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.extra-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.extra-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f3460;
+  margin-bottom: 4px;
+}
+
+.extra-label {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.extra-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-green { background: #d1fae5; color: #065f46; }
+.badge-yellow { background: #fef3c7; color: #92400e; }
+.badge-orange { background: #ffedd5; color: #9a3412; }
+.badge-red { background: #fee2e2; color: #991b1b; }
+.badge-darkred { background: #991b1b; color: white; }
+.badge-blue { background: #dbeafe; color: #1e40af; }

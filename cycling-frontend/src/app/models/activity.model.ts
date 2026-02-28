@@ -24,6 +24,9 @@ export interface Activity {
   distanceKm: string;
   duration: string;
   pace: string;
+  averageCadence?: number | null;
+  sufferScore?: number | null;
+  averageTemp?: number | null;
 }
 
 // Lo que enviamos al crear/editar

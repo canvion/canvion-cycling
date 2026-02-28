@@ -139,6 +139,59 @@ export class ActivityDetail implements OnInit {
     if (type === 'Swim') return '🏊';
     return '🏅';
   }
+  getCadenceLabel(rpm: number): string {
+    if (rpm < 70) return 'Baja';
+    if (rpm <= 90) return 'Normal';
+    if (rpm <= 110) return 'Alta';
+    return 'Muy alta';
+  }
+
+  getCadenceClass(rpm: number): string {
+    if (rpm < 70) return 'badge-yellow';
+    if (rpm <= 90) return 'badge-green';
+    if (rpm <= 110) return 'badge-yellow';
+    return 'badge-orange';
+  }
+
+  getSufferLabel(score: number): string {
+    if (score <= 50) return 'Fácil';
+    if (score <= 100) return 'Moderado';
+    if (score <= 150) return 'Duro';
+    if (score <= 200) return 'Muy duro';
+    return 'Extremo';
+  }
+
+  getSufferClass(score: number): string {
+    if (score <= 50) return 'badge-green';
+    if (score <= 100) return 'badge-yellow';
+    if (score <= 150) return 'badge-orange';
+    if (score <= 200) return 'badge-red';
+    return 'badge-darkred';
+  }
+
+  getTempIcon(temp: number): string {
+    if (temp < 0) return '❄️';
+    if (temp < 10) return '🥶';
+    if (temp < 20) return '🌤️';
+    if (temp < 30) return '☀️';
+    return '🔥';
+  }
+
+  getTempLabel(temp: number): string {
+    if (temp < 0) return 'Muy frío';
+    if (temp < 10) return 'Frío';
+    if (temp < 20) return 'Templado';
+    if (temp < 30) return 'Cálido';
+    return 'Muy cálido';
+  }
+
+  getTempClass(temp: number): string {
+    if (temp < 10) return 'badge-blue';
+    if (temp < 20) return 'badge-green';
+    if (temp < 30) return 'badge-yellow';
+    return 'badge-red';
+  }
+
   goBack(): void {
     this.location.back();
   }
