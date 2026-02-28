@@ -36,6 +36,11 @@ export class Dashboard implements OnInit {
 
   selectedPeriod: string = 'all';
 
+  // Estadísticas año anterior
+  lastYearActivities: number = 0;
+  lastYearKm: number = 0;
+  lastYearHours: number = 0;
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
@@ -80,6 +85,8 @@ export class Dashboard implements OnInit {
 
     // Datos para el gráfico por mes
     this.buildChartData();
+
+    this.calculateYearComparison();
   }
 
   buildChartData(): void {
@@ -157,6 +164,7 @@ export class Dashboard implements OnInit {
       ctx.fillText(this.chartLabels[i], x + barWidth / 2, chartHeight + 20);
     });
   }
+
   // Conectar con Strava
   connectStrava(): void {
     this.stravaService.getAuthUrl().subscribe({
@@ -215,6 +223,35 @@ export class Dashboard implements OnInit {
     this.totalKm = filtered.reduce((sum, a) => sum + (a.distance / 1000), 0);
     this.totalHours = filtered.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
     this.cdr.detectChanges();
+  }
+
+  calculateYearComparison(): void {
+    const currentYear = new Date().getFullYear();
+    const lastYear = currentYear - 1;
+
+    const thisYearData = this.activities.filter(a =>
+      new Date(a.startDate).getFullYear() === currentYear
+    );
+
+    const lastYearData = this.activities.filter(a =>
+      new Date(a.startDate).getFullYear() === lastYear
+    );
+
+    // Este año (solo sobreescribimos si el periodo es 'all' o 'year')
+    this.lastYearActivities = lastYearData.length;
+    this.lastYearKm = lastYearData.reduce((sum, a) => sum + (a.distance / 1000), 0);
+    this.lastYearHours = lastYearData.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
+  }
+
+
+  getDiff(current: number, last: number): string {
+    if (last === 0) return '';
+    const diff = ((current - last) / last * 100).toFixed(0);
+    return Number(diff) >= 0 ? `+${diff}%` : `${diff}%`;
+  }
+
+  isPositive(current: number, last: number): boolean {
+    return current >= last;
   }
 
   logout(): void {

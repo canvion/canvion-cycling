@@ -330,3 +330,68 @@
   border-color: #0f3460;
   color: white;
 }
+
+.year-comparison {
+  margin-bottom: 24px;
+}
+
+.year-comparison h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 12px 0;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.comparison-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  text-align: center;
+}
+
+.comparison-label {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.comparison-values {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.current {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f3460;
+}
+
+.vs {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.last {
+  font-size: 16px;
+  color: #aaa;
+}
+
+.diff {
+  font-size: 13px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.diff.positive {
+  color: #16a34a;
+}

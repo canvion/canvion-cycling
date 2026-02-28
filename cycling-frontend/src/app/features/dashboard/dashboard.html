@@ -61,6 +61,46 @@
         </div>
       </div>
 
+      <!-- Comparativa año anterior -->
+      <div class="year-comparison" *ngIf="lastYearActivities > 0">
+        <h2>Este año vs {{ 2025 }}</h2>
+        <div class="comparison-grid">
+          <div class="comparison-card">
+            <div class="comparison-label">Actividades</div>
+            <div class="comparison-values">
+              <span class="current">{{ totalActivities }}</span>
+              <span class="vs">vs</span>
+              <span class="last">{{ lastYearActivities }}</span>
+            </div>
+            <div class="diff" [class.positive]="isPositive(totalActivities, lastYearActivities)">
+              {{ getDiff(totalActivities, lastYearActivities) }}
+            </div>
+          </div>
+          <div class="comparison-card">
+            <div class="comparison-label">Kilómetros</div>
+            <div class="comparison-values">
+              <span class="current">{{ totalKm.toFixed(0) }}</span>
+              <span class="vs">vs</span>
+              <span class="last">{{ lastYearKm.toFixed(0) }}</span>
+            </div>
+            <div class="diff" [class.positive]="isPositive(totalKm, lastYearKm)">
+              {{ getDiff(totalKm, lastYearKm) }}
+            </div>
+          </div>
+          <div class="comparison-card">
+            <div class="comparison-label">Horas</div>
+            <div class="comparison-values">
+              <span class="current">{{ totalHours.toFixed(0) }}</span>
+              <span class="vs">vs</span>
+              <span class="last">{{ lastYearHours.toFixed(0) }}</span>
+            </div>
+            <div class="diff" [class.positive]="isPositive(totalHours, lastYearHours)">
+              {{ getDiff(totalHours, lastYearHours) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Gráfico y últimas actividades -->
       <div class="bottom-grid">
 
