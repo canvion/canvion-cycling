@@ -15,5 +15,5 @@ export const routes: Routes = [
   {  path: 'activities/:id', loadComponent: () => import('./features/activities/activity-detail/activity-detail').then(m => m.ActivityDetail), canActivate: [AuthGuard] },
 
   // Cualquier ruta desconocida redirige al dashboard
-  { path: '**', redirectTo: 'dashboard' }
+  { path: '**', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) }
 ];
