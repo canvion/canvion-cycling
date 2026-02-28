@@ -129,3 +129,56 @@ nav {
   overflow-y: auto;
   min-height: 0;
 }
+
+/* Botón hamburguesa */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 200;
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Overlay */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+}
+
+@media (max-width: 768px) {
+  /* Mostramos hamburguesa */
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ocultamos overlay hasta que se abra */
+  .overlay {
+    display: block;
+  }
+
+  /* Sidebar fuera de pantalla por defecto */
+  .sidebar {
+    position: fixed;
+    left: -220px;
+    z-index: 200;
+    transition: left 0.3s;
+  }
+
+  /* Sidebar visible al abrir */
+  .sidebar.mobile-open {
+    left: 0;
+  }
+}

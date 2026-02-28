@@ -152,3 +152,8 @@
   .metrics-grid { grid-template-columns: repeat(2, 1fr); }
   .top-bar { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
+
+@media (max-width: 768px) {
+  .layout { margin-left: 0; }
+  .main { padding: 60px 16px 16px 16px; } /* 60px arriba para el hamburguesa */
+}

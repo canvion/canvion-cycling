@@ -15,6 +15,12 @@ export class Sidebar {
   isCollapsed: boolean = false;
   username: string = '';
 
+  isMobileOpen: boolean = false;
+
+  toggleMobile(): void {
+    this.isMobileOpen = !this.isMobileOpen;
+  }
+
   constructor(
     private authService: AuthService,
     private router: Router

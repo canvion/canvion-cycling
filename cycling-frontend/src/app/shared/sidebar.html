@@ -1,3 +1,9 @@
+<button class="hamburger" (click)="toggleMobile()">☰</button>
+
+<!-- Overlay oscuro al abrir el menú -->
+<div class="overlay" *ngIf="isMobileOpen" (click)="toggleMobile()"></div>
+
+
 <aside class="sidebar" [class.collapsed]="isCollapsed">
 
   <!-- Botón colapsar -->
@@ -41,5 +47,6 @@
       <span *ngIf="isCollapsed">🚪</span>
     </button>
   </div>
+
 
 </aside>
