@@ -1,1 +1,103 @@
-<p>activity-detail works!</p>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚴 Canvion</div>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">📊 Dashboard</a>
+      <a routerLink="/activities" class="nav-item active">🏃 Actividades</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <span class="sidebar-user">👤 {{ username }}</span>
+      <button class="btn-logout" (click)="logout()">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main">
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">Cargando actividad...</div>
+
+    <div *ngIf="!isLoading && activity">
+
+      <!-- Header -->
+      <div class="top-bar">
+        <div class="top-left">
+          <a routerLink="/activities" class="btn-back">← Volver</a>
+          <h1>{{ activity.name }}</h1>
+        </div>
+        <span class="badge">{{ activity.isManual ? 'Manual' : 'Strava' }}</span>
+      </div>
+
+      <!-- Info básica -->
+      <div class="info-bar">
+        <span>{{ getIcon(activity.type) }} {{ activity.type }}</span>
+        <span>📅 {{ activity.startDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        <span *ngIf="activity.description">📝 {{ activity.description }}</span>
+      </div>
+
+      <!-- Métricas principales -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">📍</div>
+          <div class="metric-value">{{ formatKm(activity.distance) }} km</div>
+          <div class="metric-label">Distancia</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⏱️</div>
+          <div class="metric-value">{{ formatTime(activity.movingTime) }}</div>
+          <div class="metric-label">Tiempo en movimiento</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⛰️</div>
+          <div class="metric-value">{{ activity.totalElevationGain }} m</div>
+          <div class="metric-label">Desnivel</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">⚡</div>
+          <div class="metric-value">{{ (activity.averageSpeed * 3.6).toFixed(1) }} km/h</div>
+          <div class="metric-label">Velocidad media</div>
+        </div>
+        <div class="metric-card" *ngIf="activity.averageHeartrate">
+          <div class="metric-icon">❤️</div>
+          <div class="metric-value">{{ activity.averageHeartrate }} bpm</div>
+          <div class="metric-label">FC media</div>
+        </div>
+        <div class="metric-card" *ngIf="activity.averageWatts">
+          <div class="metric-icon">🔋</div>
+          <div class="metric-value">{{ activity.averageWatts }} W</div>
+          <div class="metric-label">Potencia media</div>
+        </div>
+        <div class="metric-card" *ngIf="activity.calories">
+          <div class="metric-icon">🔥</div>
+          <div class="metric-value">{{ activity.calories }} kcal</div>
+          <div class="metric-label">Calorías</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-icon">🏎️</div>
+          <div class="metric-value">{{ (activity.maxSpeed * 3.6).toFixed(1) }} km/h</div>
+          <div class="metric-label">Velocidad máxima</div>
+        </div>
+      </div>
+
+      <!-- Mapa -->
+      <div class="map-card" *ngIf="activity.summaryPolyline">
+        <h2>Ruta</h2>
+        <div id="map"></div>
+      </div>
+
+      <div class="no-map" *ngIf="!activity.summaryPolyline">
+        <p>🗺️ Esta actividad no tiene ruta guardada</p>
+      </div>
+
+    </div>
+
+    <!-- Actividad no encontrada -->
+    <div class="not-found" *ngIf="!isLoading && !activity">
+      <p>Actividad no encontrada</p>
+      <a routerLink="/activities">Volver a actividades</a>
+    </div>
+
+  </main>
+</div>
