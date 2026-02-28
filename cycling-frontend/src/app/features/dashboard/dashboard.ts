@@ -41,6 +41,8 @@ export class Dashboard implements OnInit {
   lastYearKm: number = 0;
   lastYearHours: number = 0;
 
+  maxChartValue: number = 1;
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
@@ -119,51 +121,10 @@ export class Dashboard implements OnInit {
 
     this.chartData = Object.values(months);
 
-    // Dibujamos el gráfico después de que el DOM esté listo
-    setTimeout(() => this.drawChart(), 500);
+    this.maxChartValue = Math.max(...this.chartData, 1);
+
   }
 
-  drawChart(): void {
-    const canvas = document.getElementById('activityChart') as HTMLCanvasElement;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const maxValue = Math.max(...this.chartData, 1);
-    const chartHeight = 150;
-    const paddingBottom = 30;
-    const paddingLeft = 20;
-    const containerWidth = canvas.parentElement?.clientWidth || 400;
-
-    const totalBars = this.chartData.length;
-    const barWidth = Math.floor((containerWidth - paddingLeft) / totalBars * 0.55);
-    const gap = Math.floor((containerWidth - paddingLeft) / totalBars * 0.45);
-
-    canvas.width = containerWidth;
-    canvas.height = chartHeight + paddingBottom;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    this.chartData.forEach((value, i) => {
-      const x = paddingLeft + i * (barWidth + gap);
-      const barH = (value / maxValue) * chartHeight;
-      const y = chartHeight - barH;
-
-      ctx.fillStyle = '#0f3460';
-      ctx.beginPath();
-      ctx.roundRect(x, y, barWidth, barH, 4);
-      ctx.fill();
-
-      ctx.fillStyle = '#333';
-      ctx.font = '12px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(value.toString(), x + barWidth / 2, y - 4);
-
-      ctx.fillStyle = '#666';
-      ctx.fillText(this.chartLabels[i], x + barWidth / 2, chartHeight + 20);
-    });
-  }
 
   // Conectar con Strava
   connectStrava(): void {

@@ -111,9 +111,16 @@
         <div class="card">
           <h2>Actividades por mes</h2>
           <div class="chart-container">
-            <canvas id="activityChart"></canvas>
+            <div class="bar-chart">
+              <div class="bar-group" *ngFor="let value of chartData; let i = index">
+                <div class="bar-wrap">
+                  <span class="bar-num">{{ value }}</span>
+                  <div class="bar" [style.height.%]="value === 0 ? 2 : (value / maxChartValue) * 100"></div>
+                </div>
+                <span class="bar-label">{{ chartLabels[i] }}</span>
+              </div>
+            </div>
           </div>
-          <p class="no-data" *ngIf="totalActivities === 0">Sin datos aún</p>
         </div>
 
         <!-- Últimas actividades -->
