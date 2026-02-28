@@ -1,1 +1,97 @@
-<p>activity-list works!</p>
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚴 Canvion</div>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">📊 Dashboard</a>
+      <a routerLink="/activities" class="nav-item active">🏃 Actividades</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <span class="sidebar-user">👤 {{ username }}</span>
+      <button class="btn-logout" (click)="logout()">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main">
+
+    <!-- Header -->
+    <div class="top-bar">
+      <h1>Actividades</h1>
+      <a routerLink="/activities/new" class="btn-new">+ Nueva actividad</a>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters">
+      <select [(ngModel)]="filterType" (change)="applyFilters()">
+        <option value="">Todos los tipos</option>
+        <option value="Ride">🚴 Ciclismo</option>
+        <option value="Run">🏃 Running</option>
+        <option value="Swim">🏊 Natación</option>
+      </select>
+
+      <input
+        type="month"
+        [(ngModel)]="filterDate"
+        (change)="applyFilters()"
+      />
+
+      <button class="btn-clear" (click)="clearFilters()">Limpiar filtros</button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading" *ngIf="isLoading">Cargando actividades...</div>
+
+    <!-- Lista -->
+    <div *ngIf="!isLoading">
+
+      <div class="no-data" *ngIf="filteredActivities.length === 0">
+        No hay actividades. ¡Crea una o sincroniza con Strava!
+      </div>
+
+      <div class="activity-card" *ngFor="let activity of filteredActivities">
+
+        <!-- Icono y nombre -->
+        <div class="activity-left">
+          <div class="activity-icon">{{ getIcon(activity.type) }}</div>
+          <div class="activity-info">
+            <span class="activity-name">{{ activity.name }}</span>
+            <span class="activity-date">{{ activity.startDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <!-- Métricas -->
+        <div class="activity-metrics">
+          <div class="metric">
+            <span class="metric-value">{{ formatKm(activity.distance) }}</span>
+            <span class="metric-label">km</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">{{ formatTime(activity.movingTime) }}</span>
+            <span class="metric-label">tiempo</span>
+          </div>
+          <div class="metric">
+            <span class="metric-value">{{ activity.totalElevationGain }}</span>
+            <span class="metric-label">m desnivel</span>
+          </div>
+        </div>
+
+        <!-- Badge manual/strava -->
+        <div class="activity-badge" [class.manual]="activity.isManual">
+          {{ activity.isManual ? 'Manual' : 'Strava' }}
+        </div>
+
+        <!-- Acciones -->
+        <div class="activity-actions">
+          <a [routerLink]="['/activities', activity.id]" class="btn-view">Ver</a>
+          <a [routerLink]="['/activities', activity.id, 'edit']" class="btn-edit">Editar</a>
+          <button class="btn-delete" (click)="deleteActivity(activity.id, activity.name)">Borrar</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+</div>

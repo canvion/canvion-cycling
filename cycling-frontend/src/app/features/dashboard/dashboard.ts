@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
@@ -37,7 +37,8 @@ export class Dashboard implements OnInit {
     private activityService: ActivityService,
     private stravaService: StravaService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +52,7 @@ export class Dashboard implements OnInit {
         this.activities = data;
         this.calculateStats();
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Error cargando actividades', err);
