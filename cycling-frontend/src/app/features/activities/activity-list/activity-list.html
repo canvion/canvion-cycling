@@ -19,7 +19,6 @@
     <!-- Header -->
     <div class="top-bar">
       <h1>Actividades</h1>
-      <a routerLink="/activities/new" class="btn-new">+ Nueva actividad</a>
     </div>
 
     <!-- Filtros -->
@@ -47,7 +46,7 @@
     <div *ngIf="!isLoading">
 
       <div class="no-data" *ngIf="filteredActivities.length === 0">
-        No hay actividades. ¡Crea una o sincroniza con Strava!
+        No hay actividades. ¡Sincroniza con Strava desde el dashboard!
       </div>
 
       <div class="activity-card" *ngFor="let activity of filteredActivities">
@@ -77,15 +76,12 @@
           </div>
         </div>
 
-        <!-- Badge manual/strava -->
-        <div class="activity-badge" [class.manual]="activity.isManual">
-          {{ activity.isManual ? 'Manual' : 'Strava' }}
-        </div>
+        <!-- Badge strava -->
+        <div class="activity-badge">Strava</div>
 
         <!-- Acciones -->
         <div class="activity-actions">
           <a [routerLink]="['/activities', activity.id]" class="btn-view">Ver</a>
-          <a [routerLink]="['/activities', activity.id, 'edit']" class="btn-edit">Editar</a>
           <button class="btn-delete" (click)="deleteActivity(activity.id, activity.name)">Borrar</button>
         </div>
 

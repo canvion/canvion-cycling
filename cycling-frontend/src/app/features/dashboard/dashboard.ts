@@ -110,7 +110,7 @@ export class Dashboard implements OnInit {
     this.chartData = Object.values(months);
 
     // Dibujamos el gráfico después de que el DOM esté listo
-    setTimeout(() => this.drawChart(), 100);
+    setTimeout(() => this.drawChart(), 500);
   }
 
   drawChart(): void {
@@ -121,13 +121,16 @@ export class Dashboard implements OnInit {
     if (!ctx) return;
 
     const maxValue = Math.max(...this.chartData, 1);
-    const barWidth = 40;
-    const gap = 20;
     const chartHeight = 150;
-    const paddingLeft = 20;
     const paddingBottom = 30;
+    const paddingLeft = 20;
+    const containerWidth = canvas.parentElement?.clientWidth || 400;
 
-    canvas.width = (barWidth + gap) * this.chartData.length + paddingLeft;
+    const totalBars = this.chartData.length;
+    const barWidth = Math.floor((containerWidth - paddingLeft) / totalBars * 0.55);
+    const gap = Math.floor((containerWidth - paddingLeft) / totalBars * 0.45);
+
+    canvas.width = containerWidth;
     canvas.height = chartHeight + paddingBottom;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -137,24 +140,20 @@ export class Dashboard implements OnInit {
       const barH = (value / maxValue) * chartHeight;
       const y = chartHeight - barH;
 
-      // Barra
       ctx.fillStyle = '#0f3460';
       ctx.beginPath();
       ctx.roundRect(x, y, barWidth, barH, 4);
       ctx.fill();
 
-      // Número encima
       ctx.fillStyle = '#333';
       ctx.font = '12px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(value.toString(), x + barWidth / 2, y - 4);
 
-      // Mes debajo
       ctx.fillStyle = '#666';
       ctx.fillText(this.chartLabels[i], x + barWidth / 2, chartHeight + 20);
     });
   }
-
   // Conectar con Strava
   connectStrava(): void {
     this.stravaService.getAuthUrl().subscribe({

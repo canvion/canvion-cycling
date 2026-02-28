@@ -12,9 +12,7 @@ export const routes: Routes = [
   // Rutas protegidas (con guard)
   { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard), canActivate: [AuthGuard] },
   { path: 'activities', loadComponent: () => import('./features/activities/activity-list/activity-list').then(m => m.ActivityList), canActivate: [AuthGuard] },
-  { path: 'activities/new', loadComponent: () => import('./features/activities/activity-form/activity-form').then(m => m.ActivityForm), canActivate: [AuthGuard] },
-  { path: 'activities/:id', loadComponent: () => import('./features/activities/activity-detail/activity-detail').then(m => m.ActivityDetail), canActivate: [AuthGuard] },
-  { path: 'activities/:id/edit', loadComponent: () => import('./features/activities/activity-form/activity-form').then(m => m.ActivityForm), canActivate: [AuthGuard] },
+  {  path: 'activities/:id', loadComponent: () => import('./features/activities/activity-detail/activity-detail').then(m => m.ActivityDetail), canActivate: [AuthGuard] },
 
   // Cualquier ruta desconocida redirige al dashboard
   { path: '**', redirectTo: 'dashboard' }

@@ -300,3 +300,7 @@
     gap: 12px;
   }
 }
+.chart-container {
+  overflow-x: hidden;
+  width: 100%;
+}
