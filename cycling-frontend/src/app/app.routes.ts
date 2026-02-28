@@ -12,6 +12,8 @@ export const routes: Routes = [
   { path: 'activities/:id', loadComponent: () => import('./features/activities/activity-detail/activity-detail').then(m => m.ActivityDetail), canActivate: [AuthGuard] },
   { path: 'records', loadComponent: () => import('./features/records/records').then(m => m.Records), canActivate: [AuthGuard] },
 
+  { path: 'stats', loadComponent: () => import('./features/stats/stats').then(m => m.Stats), canActivate: [AuthGuard] },
+
   // Siempre al final
   { path: '**', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) },
 ];

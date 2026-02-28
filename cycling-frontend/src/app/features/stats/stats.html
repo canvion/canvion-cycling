@@ -1,0 +1,75 @@
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">🚴 Canvion</div>
+    <nav>
+      <a routerLink="/dashboard" class="nav-item">📊 Dashboard</a>
+      <a routerLink="/activities" class="nav-item">🏃 Actividades</a>
+      <a routerLink="/records" class="nav-item">🏆 Récords</a>
+      <a routerLink="/stats" class="nav-item active">📈 Estadísticas</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <span class="sidebar-user">👤 {{ username }}</span>
+      <button class="btn-logout" (click)="logout()">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="main">
+
+    <div class="top-bar">
+      <h1>📈 Estadísticas avanzadas</h1>
+      <p class="subtitle">Análisis detallado de tus entrenamientos</p>
+    </div>
+
+    <app-spinner *ngIf="isLoading"></app-spinner>
+
+    <div *ngIf="!isLoading">
+
+      <!-- Km por semana -->
+      <div class="chart-card">
+        <h2>Kilómetros por semana <span class="hint">(últimas 8 semanas)</span></h2>
+        <div class="bar-chart">
+          <div class="bar-group" *ngFor="let value of weekData; let i = index">
+            <div class="bar-wrap">
+              <span class="bar-num">{{ value }}</span>
+              <div class="bar" [style.height.%]="value === 0 ? 2 : (value / maxWeekKm) * 100"></div>
+            </div>
+            <span class="bar-label">{{ weekLabels[i] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Km por mes -->
+      <div class="chart-card">
+        <h2>Kilómetros por mes <span class="hint">(últimos 6 meses)</span></h2>
+        <div class="bar-chart">
+          <div class="bar-group" *ngFor="let value of monthKmData; let i = index">
+            <div class="bar-wrap">
+              <span class="bar-num">{{ value }}</span>
+              <div class="bar bar-orange" [style.height.%]="value === 0 ? 2 : (value / maxMonthKm) * 100"></div>
+            </div>
+            <span class="bar-label">{{ monthLabels[i] }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actividades por día de la semana -->
+      <div class="chart-card">
+        <h2>¿Qué días sales más? <span class="hint">(actividades por día)</span></h2>
+        <div class="bar-chart">
+          <div class="bar-group" *ngFor="let value of dayData; let i = index">
+            <div class="bar-wrap">
+              <span class="bar-num">{{ value }}</span>
+              <div class="bar bar-green" [style.height.%]="value === 0 ? 2 : (value / maxDayCount) * 100"></div>
+            </div>
+            <span class="bar-label">{{ dayLabels[i] }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
