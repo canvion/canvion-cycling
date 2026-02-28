@@ -44,6 +44,8 @@ export class Dashboard implements OnInit {
 
   maxChartValue: number = 1;
 
+  currentYear: number = new Date().getFullYear();
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,

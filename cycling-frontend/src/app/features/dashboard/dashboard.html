@@ -53,10 +53,7 @@
 
       <!-- Comparativa año anterior -->
       <div class="year-comparison" *ngIf="lastYearActivities > 0">
-        <h2>
-          {{ selectedPeriod === 'month' ? 'Este mes' : selectedPeriod === 'year' ? 'Este año' : 'Total' }}
-          vs mismo periodo año anterior
-        </h2>
+        <h2>{{ currentYear }} vs {{ currentYear - 1 }}</h2>
         <div class="comparison-grid">
           <div class="comparison-card">
             <div class="comparison-label">Actividades</div>
