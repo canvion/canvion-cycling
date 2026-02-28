@@ -5,11 +5,12 @@ import { ActivityService } from '../../core/services/activity.service';
 import { StravaService } from '../../core/services/strava.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
+import { SpinnerComponent } from '../../shared/spinner.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SpinnerComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

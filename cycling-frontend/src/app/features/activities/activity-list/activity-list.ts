@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivityService } from '../../../core/services/activity.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Activity } from '../../../models/activity.model';
+import { SpinnerComponent } from '../../../shared/spinner.component';
 
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, SpinnerComponent, FormsModule],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.css'
 })

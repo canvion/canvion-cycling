@@ -31,7 +31,7 @@
     <div class="sync-message" *ngIf="syncMessage">{{ syncMessage }}</div>
 
     <!-- Loading -->
-    <div class="loading" *ngIf="isLoading">Cargando datos...</div>
+    <app-spinner *ngIf="isLoading"></app-spinner>
 
     <div *ngIf="!isLoading">
 

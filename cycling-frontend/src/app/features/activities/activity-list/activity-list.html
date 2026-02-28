@@ -40,7 +40,7 @@
     </div>
 
     <!-- Loading -->
-    <div class="loading" *ngIf="isLoading">Cargando actividades...</div>
+    <app-spinner *ngIf="isLoading"></app-spinner>
 
     <!-- Lista -->
     <div *ngIf="!isLoading">

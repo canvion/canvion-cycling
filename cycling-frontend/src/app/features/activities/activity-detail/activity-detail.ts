@@ -4,11 +4,12 @@ import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { ActivityService } from '../../../core/services/activity.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Activity } from '../../../models/activity.model';
+import { SpinnerComponent } from '../../../shared/spinner.component';
 
 @Component({
   selector: 'app-activity-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, SpinnerComponent],
   templateUrl: './activity-detail.html',
   styleUrl: './activity-detail.css'
 })
