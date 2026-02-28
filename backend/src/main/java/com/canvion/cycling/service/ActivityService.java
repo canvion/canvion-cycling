@@ -137,6 +137,9 @@ public class ActivityService {
         response.setMaxHeartrate(activity.getMaxHeartrate());
         response.setAverageWatts(activity.getAverageWatts());
         response.setMaxWatts(activity.getMaxWatts());
+        response.setAverageCadence(activity.getAverageCadence());
+        response.setSufferScore(activity.getSufferScore());
+        response.setAverageTemp(activity.getAverageTemp());
         response.setSummaryPolyline(activity.getSummaryPolyline());
         response.setDescription(activity.getDescription());
         response.setCalories(activity.getCalories());

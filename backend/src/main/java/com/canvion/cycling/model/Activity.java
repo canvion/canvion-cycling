@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +14,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 public class Activity {
 
     @Id
@@ -33,28 +31,28 @@ public class Activity {
     private String name;
 
     @Column(nullable = false, length = 50)
-    private String type; // Ride, Run, Swim, etc.
+    private String type;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
     @Column(name = "distance")
-    private Integer distance; // En metros
+    private Integer distance;
 
     @Column(name = "moving_time")
-    private Integer movingTime; // En segundos
+    private Integer movingTime;
 
     @Column(name = "elapsed_time")
-    private Integer elapsedTime; // En segundos
+    private Integer elapsedTime;
 
     @Column(name = "total_elevation_gain")
-    private Integer totalElevationGain; // En metros
+    private Integer totalElevationGain;
 
     @Column(name = "average_speed")
-    private Float averageSpeed; // m/s
+    private Float averageSpeed;
 
     @Column(name = "max_speed")
-    private Float maxSpeed; // m/s
+    private Float maxSpeed;
 
     @Column(name = "average_heartrate")
     private Integer averageHeartrate;
@@ -68,19 +66,28 @@ public class Activity {
     @Column(name = "max_watts")
     private Integer maxWatts;
 
+    @Column(name = "average_cadence")
+    private Float averageCadence;
+
+    @Column(name = "suffer_score")
+    private Integer sufferScore;
+
+    @Column(name = "average_temp")
+    private Integer averageTemp;
+
     @Column(name = "summary_polyline", columnDefinition = "TEXT")
-    private String summaryPolyline; // Ruta GPS codificada
+    private String summaryPolyline;
 
     @Column(name = "detailed_polyline", columnDefinition = "TEXT")
-    private String detailedPolyline; // Ruta GPS detallada
+    private String detailedPolyline;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 500)
     private String description;
 
     @Column(name = "calories")
     private Integer calories;
 
-    @Column(name = "is_manual")
+    @Column(name = "is_manual", nullable = false)
     private Boolean isManual = false;
 
     @CreatedDate
@@ -93,12 +100,8 @@ public class Activity {
 
     @PrePersist
     protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-        if (isManual == null) {
-            isManual = false;
-        }
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

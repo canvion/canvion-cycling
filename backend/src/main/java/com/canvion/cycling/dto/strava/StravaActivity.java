@@ -62,4 +62,14 @@ public class StravaActivity {
 
     @JsonProperty("map")
     private StravaMap map;
+
+
+    @JsonProperty("average_cadence")
+    private Float averageCadence;
+
+    @JsonProperty("suffer_score")
+    private Integer sufferScore;
+
+    @JsonProperty("average_temp")
+    private Integer averageTemp;
 }
