@@ -34,6 +34,8 @@ export class Dashboard implements OnInit {
   chartLabels: string[] = [];
   chartData: number[] = [];
 
+  selectedPeriod: string = 'all';
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
@@ -183,6 +185,36 @@ export class Dashboard implements OnInit {
         this.isSyncing = false;
       }
     });
+  }
+
+  filterByPeriod(period: string): void {
+    this.selectedPeriod = period;
+
+    const now = new Date();
+    let filtered: Activity[];
+
+    if (period === 'month') {
+      // Solo este mes
+      filtered = this.activities.filter(a => {
+        const d = new Date(a.startDate);
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+      });
+    } else if (period === 'year') {
+      // Solo este año
+      filtered = this.activities.filter(a => {
+        const d = new Date(a.startDate);
+        return d.getFullYear() === now.getFullYear();
+      });
+    } else {
+      // Todo
+      filtered = this.activities;
+    }
+
+    // Recalculamos estadísticas con el filtro
+    this.totalActivities = filtered.length;
+    this.totalKm = filtered.reduce((sum, a) => sum + (a.distance / 1000), 0);
+    this.totalHours = filtered.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
+    this.cdr.detectChanges();
   }
 
   logout(): void {

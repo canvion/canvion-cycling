@@ -35,6 +35,13 @@
 
     <div *ngIf="!isLoading">
 
+      <!-- Filtro de periodo -->
+      <div class="period-filter">
+        <button [class.active]="selectedPeriod === 'month'" (click)="filterByPeriod('month')">Este mes</button>
+        <button [class.active]="selectedPeriod === 'year'" (click)="filterByPeriod('year')">Este año</button>
+        <button [class.active]="selectedPeriod === 'all'" (click)="filterByPeriod('all')">Todo</button>
+      </div>
+
       <!-- Estadísticas generales -->
       <div class="stats-grid">
         <div class="stat-card">
