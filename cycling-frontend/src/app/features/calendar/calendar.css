@@ -1,0 +1,153 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f4f6fb;
+  margin-left: 220px;
+  transition: margin-left 0.3s;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Centrado total */
+.calendar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.calendar-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  width: 480px;
+}
+
+/* Navegación mes */
+.month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.month-nav h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.month-nav button {
+  background: #f4f6fb;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  color: #0f3460;
+  transition: background 0.2s;
+}
+
+.month-nav button:hover {
+  background: #e0e7f0;
+}
+
+/* Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+/* Cabecera días */
+.day-header {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #aaa;
+  padding: 6px 0;
+}
+
+/* Celda */
+.day-cell {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: transparent;
+}
+
+.day-cell.empty {
+  background: transparent;
+}
+
+.day-cell.today {
+  border: 2px solid #0f3460;
+}
+
+.day-cell.has-activity {
+  background: #1a1a2e;
+}
+
+.day-cell.clickable {
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.day-cell.clickable:hover {
+  background: #fc4c02;
+  transform: scale(1.1);
+}
+
+/* Número del día */
+.day-number {
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+}
+
+.today .day-number {
+  color: #0f3460;
+  font-weight: 700;
+}
+
+/* Icono bici */
+.bike-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Badge múltiples */
+.multi-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fc4c02;
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .layout { margin-left: 0; height: auto; overflow: auto; }
+  .main { padding: 16px; }
+  .calendar-card { width: 100%; }
+}

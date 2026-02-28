@@ -1,0 +1,56 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+
+  <main class="main">
+
+    <app-spinner *ngIf="isLoading"></app-spinner>
+
+    <div *ngIf="!isLoading" class="calendar-wrapper">
+
+      <div class="calendar-card">
+
+        <!-- Navegación mes -->
+        <div class="month-nav">
+          <button (click)="prevMonth()">←</button>
+          <h2>{{ monthNames[currentMonth] }} {{ currentYear }}</h2>
+          <button (click)="nextMonth()">→</button>
+        </div>
+
+        <!-- Cabecera días de la semana -->
+        <div class="calendar-grid">
+          <div class="day-header" *ngFor="let day of dayNames">{{ day }}</div>
+
+          <!-- Celdas del calendario -->
+          <div
+            *ngFor="let cell of calendarDays"
+            class="day-cell"
+            [class.empty]="cell.day === null"
+            [class.today]="isToday(cell.day)"
+            [class.has-activity]="cell.activities.length > 0"
+            [class.clickable]="cell.activities.length > 0"
+            (click)="cell.activities.length > 0 && goToActivity(cell.activities)"
+          >
+            <!-- Sin actividad: número del día -->
+            <span class="day-number" *ngIf="cell.day && cell.activities.length === 0">{{ cell.day }}</span>
+
+            <!-- Con actividad: icono de bici -->
+            <svg *ngIf="cell.activities.length > 0" class="bike-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="5.5" cy="17.5" r="3.5"/>
+              <circle cx="18.5" cy="17.5" r="3.5"/>
+              <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9 11l4-2 2 4h4"/>
+              <path d="M9 11L6.5 7H14"/>
+            </svg>
+
+            <!-- Badge múltiples actividades -->
+            <span class="multi-badge" *ngIf="cell.activities.length > 1">{{ cell.activities.length }}</span>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+</div>

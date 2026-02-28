@@ -14,7 +14,7 @@
       <!-- Header -->
       <div class="top-bar">
         <div class="top-left">
-          <a routerLink="/activities" class="btn-back">← Volver</a>
+          <button class="btn-back" (click)="goBack()">← Volver</button>
           <h1>{{ activity.name }}</h1>
         </div>
         <span class="badge">{{ activity.isManual ? 'Manual' : 'Strava' }}</span>

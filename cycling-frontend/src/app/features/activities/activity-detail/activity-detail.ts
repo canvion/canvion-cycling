@@ -6,6 +6,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Activity } from '../../../models/activity.model';
 import { SpinnerComponent } from '../../../shared/spinner.component';
 import { Sidebar } from '../../../shared/sidebar';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-activity-detail',
@@ -25,7 +26,8 @@ export class ActivityDetail implements OnInit {
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -137,9 +139,7 @@ export class ActivityDetail implements OnInit {
     if (type === 'Swim') return '🏊';
     return '🏅';
   }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  goBack(): void {
+    this.location.back();
   }
 }
