@@ -1,0 +1,41 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed">
+
+  <!-- Botón colapsar -->
+  <button class="toggle-btn" (click)="toggle()">
+    {{ isCollapsed ? '→' : '←' }}
+  </button>
+
+  <!-- Logo -->
+  <div class="sidebar-logo" *ngIf="!isCollapsed">🚴 Canvion</div>
+  <div class="sidebar-logo-small" *ngIf="isCollapsed">🚴</div>
+
+  <!-- Navegación -->
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Dashboard' : ''">
+      <span class="nav-icon">📊</span>
+      <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
+    </a>
+    <a routerLink="/activities" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Actividades' : ''">
+      <span class="nav-icon">🏃</span>
+      <span class="nav-text" *ngIf="!isCollapsed">Actividades</span>
+    </a>
+    <a routerLink="/records" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Récords' : ''">
+      <span class="nav-icon">🏆</span>
+      <span class="nav-text" *ngIf="!isCollapsed">Récords</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Estadísticas' : ''">
+      <span class="nav-icon">📈</span>
+      <span class="nav-text" *ngIf="!isCollapsed">Estadísticas</span>
+    </a>
+  </nav>
+
+  <!-- Usuario y logout -->
+  <div class="sidebar-bottom">
+    <span class="sidebar-user" *ngIf="!isCollapsed">👤 {{ username }}</span>
+    <button class="btn-logout" (click)="logout()" [title]="isCollapsed ? 'Salir' : ''">
+      <span *ngIf="!isCollapsed">Salir</span>
+      <span *ngIf="isCollapsed">🚪</span>
+    </button>
+  </div>
+
+</aside>

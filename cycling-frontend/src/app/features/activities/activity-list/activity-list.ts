@@ -6,11 +6,12 @@ import { ActivityService } from '../../../core/services/activity.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Activity } from '../../../models/activity.model';
 import { SpinnerComponent } from '../../../shared/spinner.component';
+import { Sidebar } from '../../../shared/sidebar';
 
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, FormsModule],
+  imports: [CommonModule, RouterLink, SpinnerComponent, FormsModule, Sidebar],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.css'
 })

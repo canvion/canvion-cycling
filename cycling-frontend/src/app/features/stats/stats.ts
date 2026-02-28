@@ -5,11 +5,12 @@ import { ActivityService } from '../../core/services/activity.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
 import { SpinnerComponent } from '../../shared/spinner.component';
+import { Sidebar } from '../../shared/sidebar';
 
 @Component({
   selector: 'app-stats',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent],
+  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar],
   templateUrl: './stats.html',
   styleUrl: './stats.css'
 })

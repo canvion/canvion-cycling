@@ -1,19 +1,7 @@
 <div class="layout">
 
   <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">🚴 Canvion</div>
-    <nav>
-      <a routerLink="/dashboard" class="nav-item">📊 Dashboard</a>
-      <a routerLink="/activities" class="nav-item">🏃 Actividades</a>
-      <a routerLink="/records" class="nav-item">🏆 Récords</a>
-      <a routerLink="/stats" class="nav-item active">📈 Estadísticas</a>
-    </nav>
-    <div class="sidebar-bottom">
-      <span class="sidebar-user">👤 {{ username }}</span>
-      <button class="btn-logout" (click)="logout()">Salir</button>
-    </div>
-  </aside>
+  <app-sidebar></app-sidebar>
 
   <!-- Contenido principal -->
   <main class="main">
