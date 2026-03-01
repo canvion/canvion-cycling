@@ -57,6 +57,20 @@
         </div>
       </div>
 
+      <!-- Cadencia por mes -->
+      <div class="chart-card" *ngIf="maxCadence > 1">
+        <h2>Cadencia media por mes <span class="hint">(rpm)</span></h2>
+        <div class="bar-chart">
+          <div class="bar-group" *ngFor="let value of cadenceData; let i = index">
+            <div class="bar-wrap">
+              <span class="bar-num">{{ value > 0 ? value : '' }}</span>
+              <div class="bar bar-purple" [style.height.%]="value === 0 ? 2 : (value / maxCadence) * 100"></div>
+            </div>
+            <span class="bar-label">{{ cadenceLabels[i] }}</span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </main>

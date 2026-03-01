@@ -34,6 +34,10 @@ export class Stats implements OnInit {
   monthKmData: number[] = [];
   maxMonthKm: number = 1;
 
+  cadenceLabels: string[] = [];
+  cadenceData: number[] = [];
+  maxCadence: number = 1;
+
   constructor(
     private activityService: ActivityService,
     private authService: AuthService,
@@ -52,6 +56,7 @@ export class Stats implements OnInit {
         this.calculateWeeklyKm(data);
         this.calculateDayOfWeek(data);
         this.calculateMonthlyKm(data);
+        this.calculateMonthlyCadence(data);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -140,6 +145,39 @@ export class Stats implements OnInit {
 
     this.monthKmData = Object.values(months).map(v => Math.round(v));
     this.maxMonthKm = Math.max(...this.monthKmData, 1);
+  }
+
+  calculateMonthlyCadence(activities: Activity[]): void {
+    const months: { [key: string]: number[] } = {};
+    const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+    const today = new Date();
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${d.getMonth()}`;
+      months[key] = [];
+    }
+
+    activities.forEach(a => {
+      if (!a.averageCadence) return;
+      const d = new Date(a.startDate);
+      const key = `${d.getFullYear()}-${d.getMonth()}`;
+      if (months[key] !== undefined) {
+        months[key].push(a.averageCadence);
+      }
+    });
+
+    this.cadenceLabels = Object.keys(months).map(key => {
+      const month = parseInt(key.split('-')[1]);
+      return monthNames[month];
+    });
+
+    // Media de cadencia por mes
+    this.cadenceData = Object.values(months).map(values =>
+      values.length > 0 ? Math.round(values.reduce((a, b) => a + b, 0) / values.length) : 0
+    );
+
+    this.maxCadence = Math.max(...this.cadenceData, 1);
   }
 
   logout(): void {

@@ -117,6 +117,10 @@
   margin-top: 6px;
 }
 
+.bar-purple {
+  background: #7c3aed;
+}
+
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .main { padding: 16px; }
