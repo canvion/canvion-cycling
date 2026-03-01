@@ -8,6 +8,7 @@
 .env.production
 .env.*.local
 *.properties
+!*-prod.properties
 !*.properties.example
 
 # ============================================
