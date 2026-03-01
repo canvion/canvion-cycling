@@ -141,7 +141,11 @@ public class StravaService {
                 new ParameterizedTypeReference<List<StravaActivity>>() {}
         );
 
+        // ========================================
+        // SOLO UNA VEZ - aquí obtenemos el body
+        // ========================================
         List<StravaActivity> stravaActivities = response.getBody();
+
         if (stravaActivities == null || stravaActivities.isEmpty()) {
             return List.of();
         }
@@ -209,9 +213,11 @@ public class StravaService {
         activity.setMaxHeartrate(sa.getMaxHeartrate() != null ? sa.getMaxHeartrate().intValue() : null);
         activity.setAverageWatts(sa.getAverageWatts());
         activity.setMaxWatts(sa.getMaxWatts());
+
         activity.setAverageCadence(sa.getAverageCadence());
         activity.setSufferScore(sa.getSufferScore());
         activity.setAverageTemp(sa.getAverageTemp());
+
         activity.setDescription(sa.getDescription());
         activity.setCalories(sa.getCalories() != null ? sa.getCalories().intValue() : null);
         activity.setIsManual(false);
