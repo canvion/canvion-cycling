@@ -1,174 +1,106 @@
-# 🚴 Canvion Cycling
+# Canvion Cycling - Training Tracker
 
-Aplicación web completa para el seguimiento y análisis de entrenamientos de ciclismo, con integración de Strava.
+Web application for cycling training tracking with Strava integration.
 
-## 📋 Descripción
+## Features
 
-Plataforma personal de tracking de entrenamientos que permite:
-- Registro y autenticación de usuarios
-- Conexión con Strava mediante OAuth2
-- Sincronización automática de actividades
-- Visualización de entrenamientos en mapas interactivos
-- Análisis de progreso con gráficos y estadísticas
-- Dashboard personalizado
+- 🚴 Track cycling activities (manual or Strava sync)
+- 📊 Detailed statistics (distance, speed, heart rate, cadence, temperature)
+- 🗺️ GPS route visualization
+- 📈 Training analytics
+- 🔐 Secure OAuth2 Strava integration
 
-## 🛠️ Stack Tecnológico
+## Tech Stack
 
 ### Backend
-- Java 17
-- Spring Boot 3.x
-- Spring Security + JWT
-- Spring Data JPA
-- PostgreSQL
-- Lombok
-- Docker
+- Java 21
+- Spring Boot 3.2.2
+- PostgreSQL 15
+- JWT Authentication
+- OAuth2 (Strava)
 
 ### Frontend
 - Angular 17+
-- TypeScript
-- Angular Material
-- Chart.js
-- Leaflet (mapas)
+- Material Design
+- Leaflet (maps)
+- Chart.js (graphs)
 
-### DevOps
+## Setup
+
+### Prerequisites
+- Java 21+
+- Node.js 18+
 - Docker & Docker Compose
-- GitHub Actions (CI/CD)
-- Render/Railway (Backend)
-- Vercel (Frontend)
+- Strava API credentials
 
-## 🚀 Instalación y Configuración
+### Backend Setup
 
-### Prerrequisitos
-- Java 17 o superior
-- Node.js 18+ y npm
-- Docker y Docker Compose
-- PostgreSQL 15+
-- Cuenta de desarrollador en Strava
-
-### 1. Clonar el repositorio
+1. Clone the repository
 ```bash
 git clone https://github.com/canvion/canvion-cycling.git
 cd canvion-cycling
 ```
 
-### 2. Configurar Backend
-
+2. Copy configuration template
 ```bash
-cd backend
-# Copiar el archivo de configuración de ejemplo
-cp src/main/resources/application.properties.example src/main/resources/application.properties
-
-# Editar application.properties con tus credenciales
-# - Base de datos
-# - JWT Secret
-# - Strava Client ID y Secret
-# - Clave de encriptación
+cd backend/src/main/resources
+cp application.properties.example application.properties
 ```
 
-### 3. Configurar Frontend
+3. Configure your secrets in `application.properties`:
+- Database credentials
+- JWT secret (generate with `openssl rand -base64 64`)
+- Encryption key (32 characters)
+- Strava API credentials
 
+4. Start PostgreSQL
+```bash
+docker-compose up -d postgres
+```
+
+5. Run backend
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+### Frontend Setup
 ```bash
 cd frontend
-# Copiar variables de entorno
-cp .env.example .env
-
-# Editar .env con tu configuración
 npm install
+ng serve
 ```
 
-### 4. Ejecutar con Docker
+Navigate to `http://localhost:4200`
 
+## Strava API Setup
+
+1. Create app at https://www.strava.com/settings/api
+2. Set authorization callback: `http://localhost:8080/api/strava/callback`
+3. Copy Client ID and Client Secret to `application.properties`
+
+## Production Deployment
+
+Use environment variables for all secrets:
+- `DATABASE_URL`
+- `DATABASE_USERNAME`
+- `DATABASE_PASSWORD`
+- `JWT_SECRET`
+- `ENCRYPTION_KEY`
+- `STRAVA_CLIENT_ID`
+- `STRAVA_CLIENT_SECRET`
+- `STRAVA_REDIRECT_URI`
+- `FRONTEND_URL`
+
+Run with production profile:
 ```bash
-# Desde la raíz del proyecto
-docker-compose up -d
+java -jar -Dspring.profiles.active=prod cycling-backend.jar
 ```
 
-La aplicación estará disponible en:
-- Frontend: http://localhost:4200
-- Backend API: http://localhost:8080
+## Author
 
-## 📝 Variables de Entorno
+Adrian Cervera - DAW Student
 
-### Backend (`application.properties`)
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/cycling_db
-spring.datasource.username=tu_usuario
-spring.datasource.password=tu_password
-jwt.secret=tu_jwt_secret_muy_largo_y_seguro
-strava.client.id=tu_strava_client_id
-strava.client.secret=tu_strava_client_secret
-encryption.key=tu_clave_aes_256_bits
-```
+## License
 
-### Frontend (`.env`)
-```
-ANGULAR_APP_API_URL=http://localhost:8080/api
-```
-
-## 🔐 Obtener credenciales de Strava
-
-1. Ve a https://www.strava.com/settings/api
-2. Crea una nueva aplicación
-3. Anota tu `Client ID` y `Client Secret`
-4. Configura el callback URL: `http://localhost:8080/api/strava/callback`
-
-## 🏗️ Estructura del Proyecto
-
-```
-canvion-cycling/
-├── backend/              # API Spring Boot
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/
-│   │   │   └── resources/
-│   │   └── test/
-│   ├── Dockerfile
-│   └── pom.xml
-├── frontend/             # Aplicación Angular
-│   ├── src/
-│   ├── Dockerfile
-│   └── package.json
-├── docker-compose.yml
-└── README.md
-```
-
-## 🧪 Testing
-
-```bash
-# Backend
-cd backend
-./mvnw test
-
-# Frontend
-cd frontend
-npm test
-```
-
-## 📦 Build para Producción
-
-```bash
-# Backend
-cd backend
-./mvnw clean package
-
-# Frontend
-cd frontend
-npm run build
-```
-
-## 🤝 Contribución
-
-Este es un proyecto personal de portfolio. Las sugerencias son bienvenidas mediante issues.
-
-## 📄 Licencia
-
-MIT License - ver archivo LICENSE para más detalles.
-
-## 👤 Autor
-
-**Canvion**
-- GitHub: [@canvion](https://github.com/canvion)
-
----
-
-⭐ Si te gusta este proyecto, dale una estrella en GitHub!
+This project is for educational purposes (DAW final project).
