@@ -27,6 +27,7 @@ export class Records implements OnInit {
   highestWatts: Activity | null = null;
   highestHeartrate: Activity | null = null;
   fastestSpeed: Activity | null = null;
+  bestCadence: Activity | null = null;
 
   constructor(
     private activityService: ActivityService,
@@ -73,6 +74,13 @@ export class Records implements OnInit {
         const withHR = rides.filter(a => a.maxHeartrate > 0);
         if (withHR.length > 0) {
           this.highestHeartrate = withHR.reduce((max, a) => a.maxHeartrate > max.maxHeartrate ? a : max);
+        }
+
+        const withCadence = rides.filter(a => a.averageCadence && a.averageCadence > 0);
+        if (withCadence.length > 0) {
+          this.bestCadence = withCadence.reduce((max, a) =>
+            (a.averageCadence || 0) > (max.averageCadence || 0) ? a : max
+          );
         }
 
         this.isLoading = false;
