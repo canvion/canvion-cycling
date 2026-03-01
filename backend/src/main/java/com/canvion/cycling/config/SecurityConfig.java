@@ -15,7 +15,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,15 +27,34 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .requiresChannel(channel -> channel
-                        .anyRequest().requiresSecure()  // Fuerza HTTPS
-                )
+                // ========================================
+                // HTTPS - Comentado para desarrollo local
+                // Descomenta en producción
+                // ========================================
+                // .requiresChannel(channel -> channel
+                //         .anyRequest().requiresSecure()
+                // )
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        // Rutas públicas
-                        .requestMatchers("/api/auth/**").permitAll()
+                        // Rutas públicas de autenticación
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/health").permitAll()
+
+                        // Rutas públicas de Strava
                         .requestMatchers("/api/strava/callback").permitAll()
+
+                        // ========================================
+                        // ACTUATOR - Health checks públicos
+                        // ========================================
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/actuator/health/**").permitAll()
+                        .requestMatchers("/actuator/info").permitAll()
+
+                        // Actuator - Otros endpoints requieren autenticación
+                        .requestMatchers("/actuator/**").authenticated()
+                        // ========================================
+
                         // Todas las demás rutas requieren autenticación
                         .anyRequest().authenticated()
                 )
@@ -52,10 +70,18 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+
+        // Orígenes permitidos
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",           // Angular development
+                "http://localhost:3000"            // Si usas React/otro framework
+                // En producción, añade: "https://tu-dominio.com"
+        ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

@@ -7,6 +7,10 @@ import com.canvion.cycling.model.User;
 import com.canvion.cycling.repository.ActivityRepository;
 import com.canvion.cycling.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +22,41 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
+
+    // ========================================
+    // NUEVO MÉTODO CON PAGINACIÓN
+    // ========================================
+    public Page<ActivityResponse> getActivitiesPaginated(String username, int page, int size, String sortBy, String direction) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Crear configuración de ordenamiento
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        // Crear configuración de paginación
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // Obtener página de actividades
+        Page<Activity> activitiesPage = activityRepository.findByUserId(user.getId(), pageable);
+
+        // Convertir a DTOs
+        return activitiesPage.map(this::mapToResponse);
+    }
+
+    // ========================================
+    // MÉTODO ORIGINAL (mantenido para compatibilidad)
+    // ========================================
+    public List<ActivityResponse> getUserActivities(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return activityRepository.findByUserOrderByStartDateDesc(user)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
 
     public ActivityResponse createActivity(ActivityRequest request, String username) {
         User user = userRepository.findByUsername(username)
@@ -44,16 +83,6 @@ public class ActivityService {
 
         Activity savedActivity = activityRepository.save(activity);
         return mapToResponse(savedActivity);
-    }
-
-    public List<ActivityResponse> getUserActivities(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        return activityRepository.findByUserOrderByStartDateDesc(user)
-                .stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
     }
 
     public ActivityResponse getActivityById(Long id, String username) {

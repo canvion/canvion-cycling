@@ -1,6 +1,7 @@
 package com.canvion.cycling.controller;
 
 import com.canvion.cycling.dto.auth.AuthResponse;
+import com.canvion.cycling.dto.auth.ChangePasswordRequest;
 import com.canvion.cycling.dto.auth.LoginRequest;
 import com.canvion.cycling.dto.auth.RegisterRequest;
 import com.canvion.cycling.service.AuthService;
@@ -8,7 +9,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -40,5 +44,23 @@ public class AuthController {
     @GetMapping("/health")
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("Auth API is running!");
+
+    }
+
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        try {
+            authService.changePassword(username, request);
+            return ResponseEntity.ok(Map.of(
+                    "message", "Password changed successfully"
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", e.getMessage()
+            ));
+        }
     }
 }

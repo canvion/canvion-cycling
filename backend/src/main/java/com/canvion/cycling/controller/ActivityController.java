@@ -3,14 +3,14 @@ package com.canvion.cycling.controller;
 import com.canvion.cycling.dto.activity.ActivityRequest;
 import com.canvion.cycling.dto.activity.ActivityResponse;
 import com.canvion.cycling.service.ActivityService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,43 +20,58 @@ public class ActivityController {
 
     private final ActivityService activityService;
 
-    @PostMapping
-    public ResponseEntity<ActivityResponse> createActivity(@Valid @RequestBody ActivityRequest request) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
+    // ========================================
+    // NUEVO - Endpoint con paginación
+    // ========================================
+    @GetMapping
+    public ResponseEntity<Page<ActivityResponse>> getActivities(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "startDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction
+    ) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-            ActivityResponse response = activityService.createActivity(request, username);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error al crear la actividad: " + e.getMessage());
+        // Validar tamaño máximo por página
+        if (size > 100) {
+            size = 100;
         }
+
+        // Validar página negativa
+        if (page < 0) {
+            page = 0;
+        }
+
+        Page<ActivityResponse> activities = activityService.getActivitiesPaginated(
+                username, page, size, sortBy, direction
+        );
+
+        return ResponseEntity.ok(activities);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ActivityResponse>> getUserActivities() {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
-
-            List<ActivityResponse> activities = activityService.getUserActivities(username);
-            return ResponseEntity.ok(activities);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error al obtener actividades: " + e.getMessage());
-        }
+    // ========================================
+    // OPCIONAL - Endpoint legacy sin paginación
+    // Mantener para compatibilidad si lo necesitas
+    // ========================================
+    @GetMapping("/all")
+    public ResponseEntity<List<ActivityResponse>> getAllActivities() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<ActivityResponse> activities = activityService.getUserActivities(username);
+        return ResponseEntity.ok(activities);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ActivityResponse> getActivityById(@PathVariable Long id) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityResponse activity = activityService.getActivityById(id, username);
+        return ResponseEntity.ok(activity);
+    }
 
-            ActivityResponse response = activityService.getActivityById(id, username);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error al obtener la actividad: " + e.getMessage());
-        }
+    @PostMapping
+    public ResponseEntity<ActivityResponse> createActivity(@Valid @RequestBody ActivityRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityResponse activity = activityService.createActivity(request, username);
+        return ResponseEntity.status(HttpStatus.CREATED).body(activity);
     }
 
     @PutMapping("/{id}")
@@ -64,27 +79,15 @@ public class ActivityController {
             @PathVariable Long id,
             @Valid @RequestBody ActivityRequest request
     ) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
-
-            ActivityResponse response = activityService.updateActivity(id, request, username);
-            return ResponseEntity.ok(response);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error al actualizar la actividad: " + e.getMessage());
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        ActivityResponse activity = activityService.updateActivity(id, request, username);
+        return ResponseEntity.ok(activity);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteActivity(@PathVariable Long id) {
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            String username = auth.getName();
-
-            activityService.deleteActivity(id, username);
-            return ResponseEntity.noContent().build();
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Error al eliminar la actividad: " + e.getMessage());
-        }
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        activityService.deleteActivity(id, username);
+        return ResponseEntity.noContent().build();
     }
 }

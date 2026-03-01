@@ -1,6 +1,7 @@
 package com.canvion.cycling.service;
 
 import com.canvion.cycling.dto.auth.AuthResponse;
+import com.canvion.cycling.dto.auth.ChangePasswordRequest;
 import com.canvion.cycling.dto.auth.LoginRequest;
 import com.canvion.cycling.dto.auth.RegisterRequest;
 import com.canvion.cycling.model.User;
@@ -12,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -83,5 +86,31 @@ public class AuthService {
                 user.getUsername(),
                 user.getEmail()
         );
+    }
+
+    public void changePassword(String username, ChangePasswordRequest request) {
+        // Validar que las contraseñas coinciden
+        if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("New passwords do not match");
+        }
+
+        // Buscar usuario
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Verificar contraseña actual
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
+
+        // Verificar que la nueva contraseña es diferente
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+            throw new RuntimeException("New password must be different from current password");
+        }
+
+        // Actualizar contraseña
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 }
