@@ -49,6 +49,11 @@
           <div class="stat-value">{{ totalHours.toFixed(0) }} h</div>
           <div class="stat-label">Horas en movimiento</div>
         </div>
+        <div class="stat-card" *ngIf="totalSufferScore > 0">
+          <div class="stat-icon">💪</div>
+          <div class="stat-value">{{ totalSufferScore }}</div>
+          <div class="stat-label">Esfuerzo acumulado</div>
+        </div>
       </div>
 
       <!-- Comparativa año anterior -->

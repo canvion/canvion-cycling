@@ -46,6 +46,8 @@ export class Dashboard implements OnInit {
 
   currentYear: number = new Date().getFullYear();
 
+  totalSufferScore: number = 0;
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
@@ -92,6 +94,8 @@ export class Dashboard implements OnInit {
     this.buildChartData();
 
     this.calculateYearComparison(this.activities);
+
+    this.totalSufferScore = this.activities.reduce((sum, a) => sum + (a.sufferScore || 0), 0);
   }
 
   buildChartData(): void {
@@ -186,6 +190,7 @@ export class Dashboard implements OnInit {
     this.totalActivities = filtered.length;
     this.totalKm = filtered.reduce((sum, a) => sum + (a.distance / 1000), 0);
     this.totalHours = filtered.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
+    this.totalSufferScore = filtered.reduce((sum, a) => sum + (a.sufferScore || 0), 0);
     this.calculateYearComparison(filtered);
     this.cdr.detectChanges();
   }
