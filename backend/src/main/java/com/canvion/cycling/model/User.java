@@ -54,6 +54,9 @@ public class User {
     @Column(name = "is_strava_connected")
     private Boolean isStravaConnected = false;
 
+    @Column(name = "max_heartrate")
+    private Integer maxHeartrate;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Activity> activities = new ArrayList<>();
 
