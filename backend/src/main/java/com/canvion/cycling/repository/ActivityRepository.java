@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
@@ -18,6 +19,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     boolean existsByStravaActivityId(Long stravaActivityId);
 
-    // Para delete account (si lo implementas)
-    void deleteByUserId(Long userId);
+    // Buscar actividades de un usuario entre dos fechas
+    List<Activity> findByUserIdAndStartDateBetween(Long userId, LocalDateTime from, LocalDateTime to);
 }
