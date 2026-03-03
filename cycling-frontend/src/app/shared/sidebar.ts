@@ -26,10 +26,21 @@ export class Sidebar {
     private router: Router
   ) {
     this.username = this.authService.getUsername() || '';
+    // Recuperamos el estado guardado
+    this.isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (this.isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    }
   }
 
   toggle(): void {
     this.isCollapsed = !this.isCollapsed;
+    localStorage.setItem('sidebarCollapsed', String(this.isCollapsed));
+    if (this.isCollapsed) {
+      document.body.classList.add('sidebar-collapsed');
+    } else {
+      document.body.classList.remove('sidebar-collapsed');
+    }
   }
 
   logout(): void {
