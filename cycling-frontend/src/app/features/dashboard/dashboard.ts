@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
 import { StravaService } from '../../core/services/strava.service';
 import { AuthService } from '../../core/services/auth.service';
+import { StatsService } from '../../core/services/stats.service';
 import { Activity } from '../../models/activity.model';
 import { SpinnerComponent } from '../../shared/spinner.component';
 import { Sidebar } from '../../shared/sidebar';
@@ -23,35 +24,34 @@ export class Dashboard implements OnInit {
   syncMessage: string = '';
   username: string = '';
 
-  // Estadísticas calculadas
-  totalActivities: number = 0;
-  totalKm: number = 0;
-  totalHours: number = 0;
-
   // Últimas 5 actividades
   lastActivities: Activity[] = [];
 
   // Datos para el gráfico (por mes)
   chartLabels: string[] = [];
   chartData: number[] = [];
+  maxChartValue: number = 1;
 
-  selectedPeriod: string = 'all';
-
-  // Estadísticas año anterior
+  // Comparativa año anterior
+  currentYear: number = new Date().getFullYear();
+  totalActivities: number = 0;
+  totalKm: number = 0;
+  totalHours: number = 0;
   lastYearActivities: number = 0;
   lastYearKm: number = 0;
   lastYearHours: number = 0;
+  selectedPeriod: string = 'all';
 
-  maxChartValue: number = 1;
-
-  currentYear: number = new Date().getFullYear();
-
-  totalSufferScore: number = 0;
+  // Stats semana / mes / año del backend
+  weekStats: any = null;
+  monthStats: any = null;
+  yearStats: any = null;
 
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
     private authService: AuthService,
+    private statsService: StatsService,
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
@@ -59,6 +59,7 @@ export class Dashboard implements OnInit {
   ngOnInit(): void {
     this.username = this.authService.getUsername() || '';
     this.loadActivities();
+    this.loadStats();
   }
 
   loadActivities(): void {
@@ -72,38 +73,42 @@ export class Dashboard implements OnInit {
       error: (err: any) => {
         console.error('Error cargando actividades', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  loadStats(): void {
+    this.statsService.getStats().subscribe({
+      next: (data: any) => {
+        this.weekStats = data.week;
+        this.monthStats = data.month;
+        this.yearStats = data.year;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Error cargando stats', err);
       }
     });
   }
 
   calculateStats(): void {
     this.totalActivities = this.activities.length;
-
-    // Suma de km totales
     this.totalKm = this.activities.reduce((sum, a) => sum + (a.distance / 1000), 0);
-
-    // Suma de horas totales
     this.totalHours = this.activities.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
 
-    // Últimas 5 actividades ordenadas por fecha
     this.lastActivities = [...this.activities]
       .sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
       .slice(0, 5);
 
-    // Datos para el gráfico por mes
     this.buildChartData();
-
     this.calculateYearComparison(this.activities);
-
-    this.totalSufferScore = this.activities.reduce((sum, a) => sum + (a.sufferScore || 0), 0);
   }
 
   buildChartData(): void {
-    // Contamos actividades por mes (últimos 6 meses)
     const months: { [key: string]: number } = {};
     const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-    // Inicializamos los últimos 6 meses con 0
     const today = new Date();
     for (let i = 5; i >= 0; i--) {
       const d = new Date(today.getFullYear(), today.getMonth() - i, 1);
@@ -111,7 +116,6 @@ export class Dashboard implements OnInit {
       months[key] = 0;
     }
 
-    // Contamos actividades en cada mes
     this.activities.forEach(a => {
       const d = new Date(a.startDate);
       const key = `${d.getFullYear()}-${d.getMonth()}`;
@@ -120,47 +124,13 @@ export class Dashboard implements OnInit {
       }
     });
 
-    // Convertimos a arrays para el gráfico
     this.chartLabels = Object.keys(months).map(key => {
-      const [year, month] = key.split('-');
-      return monthNames[parseInt(month)];
+      const month = parseInt(key.split('-')[1]);
+      return monthNames[month];
     });
 
     this.chartData = Object.values(months);
-
     this.maxChartValue = Math.max(...this.chartData, 1);
-
-  }
-
-
-  // Conectar con Strava
-  connectStrava(): void {
-    this.stravaService.getAuthUrl().subscribe({
-      next: (res: any) => {
-        window.open(res.authorizationUrl, '_blank');
-      },
-      error: (err: any) => {
-        console.error('Error obteniendo URL de Strava', err);
-      }
-    });
-  }
-
-  // Sincronizar actividades de Strava
-  syncStrava(): void {
-    this.isSyncing = true;
-    this.syncMessage = '';
-
-    this.stravaService.syncActivities().subscribe({
-      next: (res: any) => {
-        this.syncMessage = `✅ ${res.newActivitiesCount} actividades nuevas sincronizadas`;
-        this.isSyncing = false;
-        this.loadActivities(); // Recargamos
-      },
-      error: (err: any) => {
-        this.syncMessage = '❌ Error al sincronizar. Conecta primero con Strava.';
-        this.isSyncing = false;
-      }
-    });
   }
 
   filterByPeriod(period: string): void {
@@ -170,50 +140,35 @@ export class Dashboard implements OnInit {
     let filtered: Activity[];
 
     if (period === 'month') {
-      // Solo este mes
       filtered = this.activities.filter(a => {
         const d = new Date(a.startDate);
         return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
       });
     } else if (period === 'year') {
-      // Solo este año
-      filtered = this.activities.filter(a => {
-        const d = new Date(a.startDate);
-        return d.getFullYear() === now.getFullYear();
-      });
+      filtered = this.activities.filter(a =>
+        new Date(a.startDate).getFullYear() === now.getFullYear()
+      );
     } else {
-      // Todo
       filtered = this.activities;
     }
 
-    // Recalculamos estadísticas con el filtro
     this.totalActivities = filtered.length;
     this.totalKm = filtered.reduce((sum, a) => sum + (a.distance / 1000), 0);
     this.totalHours = filtered.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
-    this.totalSufferScore = filtered.reduce((sum, a) => sum + (a.sufferScore || 0), 0);
     this.calculateYearComparison(filtered);
     this.cdr.detectChanges();
   }
 
   calculateYearComparison(filtered: Activity[]): void {
     const now = new Date();
-
     let comparison: Activity[];
 
     if (this.selectedPeriod === 'month') {
-      // Mismo mes del año anterior
       comparison = this.activities.filter(a => {
         const d = new Date(a.startDate);
-        return d.getMonth() === now.getMonth() &&
-          d.getFullYear() === now.getFullYear() - 1;
+        return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear() - 1;
       });
-    } else if (this.selectedPeriod === 'year') {
-      // Año anterior completo
-      comparison = this.activities.filter(a =>
-        new Date(a.startDate).getFullYear() === now.getFullYear() - 1
-      );
     } else {
-      // Todo: comparamos el año anterior vs el actual
       comparison = this.activities.filter(a =>
         new Date(a.startDate).getFullYear() === now.getFullYear() - 1
       );
@@ -223,7 +178,6 @@ export class Dashboard implements OnInit {
     this.lastYearKm = comparison.reduce((sum, a) => sum + (a.distance / 1000), 0);
     this.lastYearHours = comparison.reduce((sum, a) => sum + (a.movingTime / 3600), 0);
   }
-
 
   getDiff(current: number, last: number): string {
     if (last === 0) return '';
@@ -235,17 +189,40 @@ export class Dashboard implements OnInit {
     return current >= last;
   }
 
+  connectStrava(): void {
+    this.stravaService.getAuthUrl().subscribe({
+      next: (res: any) => window.open(res.authorizationUrl, '_blank'),
+      error: (err: any) => console.error('Error obteniendo URL de Strava', err)
+    });
+  }
+
+  syncStrava(): void {
+    this.isSyncing = true;
+    this.syncMessage = '';
+
+    this.stravaService.syncActivities().subscribe({
+      next: (res: any) => {
+        this.syncMessage = `✅ ${res.newActivitiesCount} actividades nuevas sincronizadas`;
+        this.isSyncing = false;
+        this.loadActivities();
+        this.loadStats();
+      },
+      error: (err: any) => {
+        this.syncMessage = '❌ Error al sincronizar. Conecta primero con Strava.';
+        this.isSyncing = false;
+      }
+    });
+  }
+
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
 
-  // Formatea metros a km
   formatKm(distance: number): string {
     return (distance / 1000).toFixed(1);
   }
 
-  // Formatea segundos a hh:mm
   formatTime(seconds: number): string {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);

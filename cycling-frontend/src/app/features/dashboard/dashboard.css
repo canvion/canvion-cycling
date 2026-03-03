@@ -1,4 +1,3 @@
-/* Layout principal con sidebar */
 .layout {
   display: flex;
   min-height: 100vh;
@@ -7,13 +6,13 @@
   transition: margin-left 0.3s;
 }
 
-/* ── MAIN ── */
 .main {
   flex: 1;
   padding: 32px;
   overflow-y: auto;
 }
 
+/* Header */
 .top-bar {
   display: flex;
   align-items: center;
@@ -45,9 +44,7 @@
   transition: background 0.2s;
 }
 
-.btn-strava:hover {
-  background: #e04302;
-}
+.btn-strava:hover { background: #e04302; }
 
 .btn-sync {
   background: #0f3460;
@@ -61,16 +58,9 @@
   transition: background 0.2s;
 }
 
-.btn-sync:hover:not(:disabled) {
-  background: #1a4a7a;
-}
+.btn-sync:hover:not(:disabled) { background: #1a4a7a; }
+.btn-sync:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.btn-sync:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Mensaje sincronización */
 .sync-message {
   background: white;
   padding: 12px 16px;
@@ -80,15 +70,7 @@
   border-left: 4px solid #0f3460;
 }
 
-/* Loading */
-.loading {
-  text-align: center;
-  padding: 60px;
-  color: #666;
-  font-size: 16px;
-}
-
-/* ── ESTADÍSTICAS ── */
+/* ── STATS SEMANA/MES/AÑO ── */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -100,221 +82,43 @@
   background: white;
   border-radius: 12px;
   padding: 24px;
-  text-align: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
-.stat-icon {
-  font-size: 32px;
-  margin-bottom: 10px;
-}
-
-.stat-value {
-  font-size: 28px;
-  font-weight: 700;
-  color: #0f3460;
-  margin-bottom: 4px;
-}
-
-.stat-label {
-  font-size: 13px;
-  color: #888;
-}
-
-/* ── GRID INFERIOR ── */
-.bottom-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-
-.card h2 {
+.stat-period {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: #1a1a2e;
-  margin: 0 0 20px 0;
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.card-header h2 {
-  margin: 0;
-}
-
-.ver-todas {
-  font-size: 13px;
-  color: #0f3460;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-/* Gráfico */
-.chart-container {
-  width: 100%;
-}
-
-.bar-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  height: 180px;
-  padding-bottom: 24px;
-}
-
-.bar-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1;
-  height: 100%;
-}
-
-.bar-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  flex: 1;
-  width: 100%;
-}
-
-.bar-num {
-  font-size: 11px;
-  color: #555;
   margin-bottom: 4px;
 }
 
-.bar {
-  width: 100%;
-  background: #0f3460;
-  border-radius: 4px 4px 0 0;
-  min-height: 2px;
-  transition: height 0.3s;
+.stat-dates {
+  font-size: 12px;
+  color: #aaa;
+  margin-bottom: 16px;
 }
 
-.bar-label {
-  font-size: 11px;
-  color: #888;
-  margin-top: 6px;
-}
-
-/* Lista de actividades */
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.activity-item:last-child {
-  border-bottom: none;
-}
-
-.activity-icon {
-  font-size: 24px;
-  width: 36px;
-  text-align: center;
-}
-
-.activity-info {
-  flex: 1;
+.stat-rows {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-.activity-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a2e;
-}
-
-.activity-meta {
-  font-size: 12px;
-  color: #888;
-  margin-top: 2px;
-}
-
-.activity-date {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.no-data {
-  text-align: center;
-  color: #aaa;
-  font-size: 14px;
-  padding: 20px 0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .sidebar {
-    display: none;
-  }
-
-  .main {
-    padding: 16px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .bottom-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .top-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-}
-.chart-container {
-  overflow-x: hidden;
-  width: 100%;
-}
-
-.period-filter {
+.stat-row {
   display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #333;
 }
 
-.period-filter button {
-  background: white;
-  border: 2px solid #e5e7eb;
-  color: #666;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-  transition: all 0.2s;
-  width: auto;
-  margin: 0;
+.stat-row span:first-child {
+  font-size: 18px;
+  width: 24px;
+  flex-shrink: 0;
 }
 
-.period-filter button.active {
-  background: #0f3460;
-  border-color: #0f3460;
-  color: white;
-}
-
+/* ── COMPARATIVA ── */
 .year-comparison {
   margin-bottom: 24px;
 }
@@ -360,15 +164,9 @@
   color: #0f3460;
 }
 
-.vs {
-  font-size: 12px;
-  color: #aaa;
-}
+.vs { font-size: 12px; color: #aaa; }
 
-.last {
-  font-size: 16px;
-  color: #aaa;
-}
+.last { font-size: 16px; color: #aaa; }
 
 .diff {
   font-size: 13px;
@@ -376,11 +174,149 @@
   color: #dc2626;
 }
 
-.diff.positive {
-  color: #16a34a;
+.diff.positive { color: #16a34a; }
+
+/* ── GRID INFERIOR ── */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.card h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 20px 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-header h2 { margin: 0; }
+
+.ver-todas {
+  font-size: 13px;
+  color: #0f3460;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Gráfico */
+.chart-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 180px;
+  padding-bottom: 24px;
+}
+
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  height: 100%;
+}
+
+.bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  width: 100%;
+}
+
+.bar-num {
+  font-size: 11px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.bar {
+  width: 100%;
+  background: #0f3460;
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+}
+
+.bar-label {
+  font-size: 11px;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* Lista actividades */
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.activity-item:last-child { border-bottom: none; }
+
+.activity-icon {
+  font-size: 24px;
+  width: 36px;
+  text-align: center;
+}
+
+.activity-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.activity-meta {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.activity-date {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.no-data {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .layout { margin-left: 0; }
-  .main { padding: 60px 16px 16px 16px; } /* 60px arriba para el hamburguesa */
+  .main { padding: 60px 16px 16px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .comparison-grid { grid-template-columns: 1fr; }
+  .bottom-grid { grid-template-columns: 1fr; }
+  .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
 }

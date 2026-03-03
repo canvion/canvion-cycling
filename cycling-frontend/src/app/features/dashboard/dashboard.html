@@ -1,9 +1,7 @@
 <div class="layout">
 
-  <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
-  <!-- Contenido principal -->
   <main class="main">
 
     <!-- Header -->
@@ -17,48 +15,53 @@
       </div>
     </div>
 
-    <!-- Mensaje de sincronización -->
+    <!-- Mensaje sincronización -->
     <div class="sync-message" *ngIf="syncMessage">{{ syncMessage }}</div>
 
-    <!-- Loading -->
     <app-spinner *ngIf="isLoading"></app-spinner>
 
     <div *ngIf="!isLoading">
 
-      <!-- Filtro de periodo -->
-      <div class="period-filter">
-        <button [class.active]="selectedPeriod === 'month'" (click)="filterByPeriod('month')">Este mes</button>
-        <button [class.active]="selectedPeriod === 'year'" (click)="filterByPeriod('year')">Este año</button>
-        <button [class.active]="selectedPeriod === 'all'" (click)="filterByPeriod('all')">Todo</button>
-      </div>
-
-      <!-- Estadísticas generales -->
-      <div class="stats-grid">
+      <!-- Stats semana / mes / año -->
+      <div class="stats-grid" *ngIf="weekStats">
         <div class="stat-card">
-          <div class="stat-icon">🏅</div>
-          <div class="stat-value">{{ totalActivities }}</div>
-          <div class="stat-label">Actividades</div>
+          <div class="stat-period">Esta semana</div>
+          <div class="stat-dates">{{ weekStats.dateFrom }} → {{ weekStats.dateTo }}</div>
+          <div class="stat-rows">
+            <div class="stat-row"><span>🚴</span><span>{{ weekStats.totalActivities }} actividades</span></div>
+            <div class="stat-row"><span>📍</span><span>{{ weekStats.totalDistanceKm }} km</span></div>
+            <div class="stat-row"><span>⏱️</span><span>{{ weekStats.totalTime }}</span></div>
+            <div class="stat-row"><span>⛰️</span><span>{{ weekStats.totalElevation }} m</span></div>
+          </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">📍</div>
-          <div class="stat-value">{{ totalKm.toFixed(0) }} km</div>
-          <div class="stat-label">Distancia total</div>
+          <div class="stat-period">Este mes</div>
+          <div class="stat-dates">{{ monthStats.dateFrom }} → {{ monthStats.dateTo }}</div>
+          <div class="stat-rows">
+            <div class="stat-row"><span>🚴</span><span>{{ monthStats.totalActivities }} actividades</span></div>
+            <div class="stat-row"><span>📍</span><span>{{ monthStats.totalDistanceKm }} km</span></div>
+            <div class="stat-row"><span>⏱️</span><span>{{ monthStats.totalTime }}</span></div>
+            <div class="stat-row"><span>⛰️</span><span>{{ monthStats.totalElevation }} m</span></div>
+          </div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon">⏱️</div>
-          <div class="stat-value">{{ totalHours.toFixed(0) }} h</div>
-          <div class="stat-label">Horas en movimiento</div>
-        </div>
-        <div class="stat-card" *ngIf="totalSufferScore > 0">
-          <div class="stat-icon">💪</div>
-          <div class="stat-value">{{ totalSufferScore }}</div>
-          <div class="stat-label">Esfuerzo acumulado</div>
+          <div class="stat-period">Este año</div>
+          <div class="stat-dates">{{ yearStats.dateFrom }} → {{ yearStats.dateTo }}</div>
+          <div class="stat-rows">
+            <div class="stat-row"><span>🚴</span><span>{{ yearStats.totalActivities }} actividades</span></div>
+            <div class="stat-row"><span>📍</span><span>{{ yearStats.totalDistanceKm }} km</span></div>
+            <div class="stat-row"><span>⏱️</span><span>{{ yearStats.totalTime }}</span></div>
+            <div class="stat-row"><span>⛰️</span><span>{{ yearStats.totalElevation }} m</span></div>
+          </div>
         </div>
       </div>
 
       <!-- Comparativa año anterior -->
       <div class="year-comparison" *ngIf="lastYearActivities > 0">
-        <h2>{{ currentYear }} vs {{ currentYear - 1 }}</h2>
+        <h2>
+          {{ selectedPeriod === 'month' ? 'Este mes' : selectedPeriod === 'year' ? 'Este año' : 'Total' }}
+          vs mismo periodo año anterior
+        </h2>
         <div class="comparison-grid">
           <div class="comparison-card">
             <div class="comparison-label">Actividades</div>
@@ -99,7 +102,6 @@
       <!-- Gráfico y últimas actividades -->
       <div class="bottom-grid">
 
-        <!-- Gráfico por mes -->
         <div class="card">
           <h2>Actividades por mes</h2>
           <div class="chart-container">
@@ -115,7 +117,6 @@
           </div>
         </div>
 
-        <!-- Últimas actividades -->
         <div class="card">
           <div class="card-header">
             <h2>Últimas actividades</h2>
@@ -130,9 +131,7 @@
                 <span class="activity-name">{{ activity.name }}</span>
                 <span class="activity-meta">{{ formatKm(activity.distance) }} km · {{ formatTime(activity.movingTime) }}</span>
               </div>
-              <div class="activity-date">
-                {{ activity.startDate | date:'dd/MM' }}
-              </div>
+              <div class="activity-date">{{ activity.startDate | date:'dd/MM' }}</div>
             </div>
             <p class="no-data" *ngIf="lastActivities.length === 0">
               Sin actividades. ¡Sincroniza con Strava!
