@@ -39,7 +39,7 @@ public class ActivityService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         // Obtener página de actividades
-        Page<Activity> activitiesPage = activityRepository.findByUserId(user.getId(), pageable);
+        Page<Activity> activitiesPage = activityRepository.findByUserIdAndDeletedFalse(user.getId(), pageable);
 
         // Convertir a DTOs
         return activitiesPage.map(this::mapToResponse);
@@ -52,7 +52,7 @@ public class ActivityService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        return activityRepository.findByUserOrderByStartDateDesc(user)
+        return activityRepository.findByUserAndDeletedFalseOrderByStartDateDesc(user)
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -107,12 +107,14 @@ public class ActivityService {
         Activity activity = activityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Actividad no encontrada"));
 
-        // Verificar que la actividad pertenece al usuario autenticado
         if (!activity.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("No tienes permiso para eliminar esta actividad");
         }
 
-        activityRepository.delete(activity);
+        // Antes: activityRepository.delete(activity);
+        // Ahora: simplemente marcamos como borrada
+        activity.setDeleted(true);
+        activityRepository.save(activity);
     }
 
     public ActivityResponse updateActivity(Long id, ActivityRequest request, String username) {

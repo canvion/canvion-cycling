@@ -90,6 +90,9 @@ public class Activity {
     @Column(name = "is_manual", nullable = false)
     private Boolean isManual = false;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted = false;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

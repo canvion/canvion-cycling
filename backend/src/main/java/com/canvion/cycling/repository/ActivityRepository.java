@@ -12,16 +12,16 @@ import java.util.Optional;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-    // Método original (sin paginación)
-    List<Activity> findByUserOrderByStartDateDesc(User user);
+    // Solo actividades no borradas
+    List<Activity> findByUserAndDeletedFalseOrderByStartDateDesc(User user);
 
-    // NUEVO - Método con paginación
-    Page<Activity> findByUserId(Long userId, Pageable pageable);
+    Page<Activity> findByUserIdAndDeletedFalse(Long userId, Pageable pageable);
+
+    List<Activity> findByUserIdAndDeletedFalseAndStartDateBetween(Long userId, LocalDateTime from, LocalDateTime to);
+
+    Optional<Activity> findByStravaActivityIdAndDeletedFalse(Long stravaActivityId);
 
     boolean existsByStravaActivityId(Long stravaActivityId);
-
-    // Buscar actividades de un usuario entre dos fechas
-    List<Activity> findByUserIdAndStartDateBetween(Long userId, LocalDateTime from, LocalDateTime to);
 
     Optional<Activity> findByStravaActivityId(Long stravaActivityId);
 }

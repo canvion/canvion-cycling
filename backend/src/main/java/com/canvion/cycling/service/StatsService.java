@@ -32,8 +32,7 @@ public class StatsService {
         LocalDateTime monday = now.minusDays(now.getDayOfWeek().getValue() - 1)
                 .toLocalDate().atStartOfDay();
 
-        List<Activity> activities = activityRepository
-                .findByUserIdAndStartDateBetween(user.getId(), monday, now);
+        List<Activity> activities = activityRepository.findByUserIdAndDeletedFalseAndStartDateBetween(user.getId(), monday, now);
 
         StatsResponse stats = new StatsResponse("week", "Esta semana");
         stats.setDateFrom(monday.format(DATE_FORMAT));
@@ -52,8 +51,7 @@ public class StatsService {
         LocalDateTime primerDiaMes = now.toLocalDate()
                 .withDayOfMonth(1).atStartOfDay();
 
-        List<Activity> activities = activityRepository
-                .findByUserIdAndStartDateBetween(user.getId(), primerDiaMes, now);
+        List<Activity> activities = activityRepository.findByUserIdAndDeletedFalseAndStartDateBetween(user.getId(), primerDiaMes, now);
 
         StatsResponse stats = new StatsResponse("month", "Este mes");
         stats.setDateFrom(primerDiaMes.format(DATE_FORMAT));
@@ -72,8 +70,7 @@ public class StatsService {
         LocalDateTime primerDiaAnio = now.toLocalDate()
                 .withDayOfYear(1).atStartOfDay();
 
-        List<Activity> activities = activityRepository
-                .findByUserIdAndStartDateBetween(user.getId(), primerDiaAnio, now);
+        List<Activity> activities = activityRepository.findByUserIdAndDeletedFalseAndStartDateBetween(user.getId(), primerDiaAnio, now);
 
         StatsResponse stats = new StatsResponse("year", "Este año");
         stats.setDateFrom(primerDiaAnio.format(DATE_FORMAT));
