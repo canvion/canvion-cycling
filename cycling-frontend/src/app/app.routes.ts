@@ -16,6 +16,8 @@ export const routes: Routes = [
 
   { path: 'calendar', loadComponent: () => import('./features/calendar/calendar').then(m => m.Calendar), canActivate: [AuthGuard] },
 
+  { path: 'settings', loadComponent: () => import('./features/settings/settings').then(m => m.Settings), canActivate: [AuthGuard] },
+
   // Siempre al final
   { path: '**', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) },
 ];

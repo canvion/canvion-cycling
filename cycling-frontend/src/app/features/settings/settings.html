@@ -1,0 +1,53 @@
+<div class="layout">
+  <app-sidebar></app-sidebar>
+  <main class="main">
+    <div class="top-bar">
+      <h1>⚙️ Ajustes</h1>
+      <p class="subtitle">Configura tu perfil de entrenamiento</p>
+    </div>
+    <div class="settings-card">
+      <h2>❤️ Frecuencia cardíaca máxima</h2>
+      <p class="description">
+        Tu FC máxima se usa para calcular en qué zona de entrenamiento estás durante cada actividad.
+        Puedes calcularla con la fórmula <strong>220 - tu edad</strong>, o usar tu valor real medido.
+      </p>
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="field">
+        <label>FC máxima (bpm)</label>
+        <div class="input-row">
+          <input type="number" [(ngModel)]="maxHeartrate" min="100" max="220" placeholder="185" />
+          <button (click)="save()" [disabled]="isSaving">
+            {{ isSaving ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+        <span class="hint">Valor entre 100 y 220 bpm</span>
+      </div>
+      <div class="zones-preview">
+        <h3>Zonas de entrenamiento</h3>
+        <div class="zone-row" *ngIf="maxHeartrate >= 100">
+          <div class="zone-bar" style="background: #64B5F6">
+            <span>Z1 · Recuperación</span>
+            <span>0 – {{ (maxHeartrate * 0.6) | number:'1.0-0' }} bpm</span>
+          </div>
+          <div class="zone-bar" style="background: #81C784">
+            <span>Z2 · Base aeróbica</span>
+            <span>{{ (maxHeartrate * 0.6) | number:'1.0-0' }} – {{ (maxHeartrate * 0.7) | number:'1.0-0' }} bpm</span>
+          </div>
+          <div class="zone-bar" style="background: #FFD54F">
+            <span>Z3 · Tempo</span>
+            <span>{{ (maxHeartrate * 0.7) | number:'1.0-0' }} – {{ (maxHeartrate * 0.8) | number:'1.0-0' }} bpm</span>
+          </div>
+          <div class="zone-bar" style="background: #FF8A65">
+            <span>Z4 · Umbral</span>
+            <span>{{ (maxHeartrate * 0.8) | number:'1.0-0' }} – {{ (maxHeartrate * 0.9) | number:'1.0-0' }} bpm</span>
+          </div>
+          <div class="zone-bar" style="background: #E57373">
+            <span>Z5 · Máximo</span>
+            <span>{{ (maxHeartrate * 0.9) | number:'1.0-0' }} – {{ maxHeartrate }} bpm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
