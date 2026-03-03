@@ -69,44 +69,52 @@
           <div class="metric-value">{{ (activity.maxSpeed * 3.6).toFixed(1) }} km/h</div>
           <div class="metric-label">Velocidad máxima</div>
         </div>
+        <div class="metric-card" *ngIf="activity.averageCadence">
+          <div class="metric-icon">🔄</div>
+          <div class="metric-value">{{ activity.averageCadence }} rpm</div>
+          <div class="metric-label">Cadencia media</div>
+          <div class="extra-badge" [class]="getCadenceClass(activity.averageCadence)">{{ getCadenceLabel(activity.averageCadence) }}</div>
+        </div>
+        <div class="metric-card" *ngIf="activity.averageTemp">
+          <div class="metric-icon">{{ getTempIcon(activity.averageTemp) }}</div>
+          <div class="metric-value">{{ activity.averageTemp }}°C</div>
+          <div class="metric-label">Temperatura</div>
+          <div class="extra-badge" [class]="getTempClass(activity.averageTemp)">{{ getTempLabel(activity.averageTemp) }}</div>
+        </div>
       </div>
 
-      <!-- Métricas adicionales -->
-      <div class="extra-metrics" *ngIf="activity.averageCadence || activity.sufferScore || activity.averageTemp">
-        <h2>Métricas adicionales</h2>
-        <div class="extra-grid">
 
-          <!-- Cadencia -->
-          <div class="extra-card" *ngIf="activity.averageCadence">
-            <div class="extra-icon">🔄</div>
-            <div class="extra-value">{{ activity.averageCadence }} rpm</div>
-            <div class="extra-label">Cadencia media</div>
-            <div class="extra-badge" [class]="getCadenceClass(activity.averageCadence)">
-              {{ getCadenceLabel(activity.averageCadence) }}
-            </div>
-          </div>
 
-          <!-- Suffer Score -->
-          <div class="extra-card" *ngIf="activity.sufferScore">
-            <div class="extra-icon">💪</div>
-            <div class="extra-value">{{ activity.sufferScore }}</div>
-            <div class="extra-label">Esfuerzo (Suffer Score)</div>
-            <div class="extra-badge" [class]="getSufferClass(activity.sufferScore)">
-              {{ getSufferLabel(activity.sufferScore) }}
-            </div>
-          </div>
+      <!-- Zona de entrenamiento -->
+      <div class="zones-card" *ngIf="zonesData">
+        <h2>Zona de entrenamiento</h2>
 
-          <!-- Temperatura -->
-          <div class="extra-card" *ngIf="activity.averageTemp">
-            <div class="extra-icon">{{ getTempIcon(activity.averageTemp) }}</div>
-            <div class="extra-value">{{ activity.averageTemp }}°C</div>
-            <div class="extra-label">Temperatura</div>
-            <div class="extra-badge" [class]="getTempClass(activity.averageTemp)">
-              {{ getTempLabel(activity.averageTemp) }}
-            </div>
-          </div>
-
+        <!-- Badge zona activa -->
+        <div class="active-zone" [class]="'zone-' + zonesData.activeZone">
+          <span class="zone-number">Z{{ zonesData.activeZone }}</span>
+          <span class="zone-name">{{ zonesData.activeZoneName }}</span>
+          <span class="zone-bpm">FC media: {{ zonesData.averageHeartrate }} bpm</span>
         </div>
+
+        <!-- Barra de 5 zonas -->
+        <div class="zones-bar">
+          <div
+            *ngFor="let zone of zonesData.allZones"
+            class="zone-segment"
+            [class.zone-active]="zone.active"
+            [style.background]="getZoneColor(zone.zoneNumber)"
+            [title]="zone.zoneName + ': ' + zone.minBpm + '-' + zone.maxBpm + ' bpm'"
+          >
+            <span class="zone-seg-label">Z{{ zone.zoneNumber }}</span>
+            <span class="zone-seg-bpm" *ngIf="zone.active">{{ zone.minBpm }}-{{ zone.maxBpm }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sin FC configurada -->
+      <div class="zones-warning" *ngIf="zonesError">
+        <span>⚠️ {{ zonesError }}</span>
+        <a routerLink="/settings">Ir a Ajustes →</a>
       </div>
 
       <!-- Mapa -->

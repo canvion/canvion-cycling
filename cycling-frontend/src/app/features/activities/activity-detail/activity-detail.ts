@@ -7,6 +7,7 @@ import { Activity } from '../../../models/activity.model';
 import { SpinnerComponent } from '../../../shared/spinner.component';
 import { Sidebar } from '../../../shared/sidebar';
 import { Location } from '@angular/common';
+import { ZonesService } from '../../../core/services/zona.service';
 
 @Component({
   selector: 'app-activity-detail',
@@ -21,13 +22,17 @@ export class ActivityDetail implements OnInit {
   isLoading: boolean = true;
   username: string = '';
 
+  zonesData: any = null;
+  zonesError: string = '';
+
   constructor(
     private activityService: ActivityService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private location: Location
+    private location: Location,
+    private zonesService: ZonesService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +50,23 @@ export class ActivityDetail implements OnInit {
       next: (data: Activity) => {
         this.activity = data;
         this.isLoading = false;
+
+        // Cargamos zonas si tiene FC
+        if (data.averageHeartrate) {
+          this.zonesService.getActivityZones(data.id).subscribe({
+            next: (zones: any) => {
+              this.zonesData = zones;
+              this.cdr.detectChanges();
+            },
+            error: (err: any) => {
+              if (err.status === 400) {
+                this.zonesError = err.error?.message || 'Configura tu FC máxima en Ajustes';
+              }
+              this.cdr.detectChanges();
+            }
+          });
+        }
+
         this.cdr.detectChanges();
 
         // Si tiene polyline, dibujamos el mapa
@@ -130,6 +152,17 @@ export class ActivityDetail implements OnInit {
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
     return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  }
+
+  getZoneColor(zone: number): string {
+    const colors: { [key: number]: string } = {
+      1: '#64B5F6',
+      2: '#81C784',
+      3: '#FFD54F',
+      4: '#FF8A65',
+      5: '#E57373'
+    };
+    return colors[zone] || '#ccc';
   }
 
   // Icono según tipo
