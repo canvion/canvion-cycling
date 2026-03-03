@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
@@ -21,4 +22,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
     // Buscar actividades de un usuario entre dos fechas
     List<Activity> findByUserIdAndStartDateBetween(Long userId, LocalDateTime from, LocalDateTime to);
+
+    Optional<Activity> findByStravaActivityId(Long stravaActivityId);
 }

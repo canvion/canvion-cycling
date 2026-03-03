@@ -229,4 +229,91 @@ public class StravaService {
 
         return activity;
     }
+
+    // Descargar UNA actividad de Strava y guardarla en BD
+    public void fetchAndSaveActivity(User user, Long stravaActivityId) {
+
+        // Renovar token si ha expirado
+        if (user.getStravaTokenExpiresAt().isBefore(LocalDateTime.now())) {
+            refreshAccessToken(user);
+        }
+
+        String accessToken = encryptionService.decrypt(user.getStravaAccessToken());
+
+        // Llamar a la API de Strava para obtener esa actividad concreta
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        String url = apiBaseUrl + "/activities/" + stravaActivityId;
+
+        ResponseEntity<StravaActivity> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                request,
+                StravaActivity.class
+        );
+
+        StravaActivity stravaActivity = response.getBody();
+        if (stravaActivity == null) {
+            throw new RuntimeException("Strava no devolvió la actividad " + stravaActivityId);
+        }
+
+        // Reutilizamos el método que ya tenías
+        Activity activity = mapStravaActivityToActivity(stravaActivity, user);
+        activityRepository.save(activity);
+    }
+
+    // Actualizar una actividad ya existente con datos frescos de Strava
+    public void fetchAndUpdateActivity(User user, Long stravaActivityId, Activity existing) {
+
+        if (user.getStravaTokenExpiresAt().isBefore(LocalDateTime.now())) {
+            refreshAccessToken(user);
+        }
+
+        String accessToken = encryptionService.decrypt(user.getStravaAccessToken());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(accessToken);
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        String url = apiBaseUrl + "/activities/" + stravaActivityId;
+
+        ResponseEntity<StravaActivity> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                request,
+                StravaActivity.class
+        );
+
+        StravaActivity sa = response.getBody();
+        if (sa == null) {
+            throw new RuntimeException("Strava no devolvió la actividad " + stravaActivityId);
+        }
+
+        // Actualizar campos de la actividad existente
+        existing.setName(sa.getName());
+        existing.setDistance(sa.getDistance() != null ? sa.getDistance().intValue() : null);
+        existing.setMovingTime(sa.getMovingTime());
+        existing.setElapsedTime(sa.getElapsedTime());
+        existing.setTotalElevationGain(sa.getTotalElevationGain() != null ? sa.getTotalElevationGain().intValue() : null);
+        existing.setAverageSpeed(sa.getAverageSpeed());
+        existing.setMaxSpeed(sa.getMaxSpeed());
+        existing.setAverageHeartrate(sa.getAverageHeartrate() != null ? sa.getAverageHeartrate().intValue() : null);
+        existing.setMaxHeartrate(sa.getMaxHeartrate() != null ? sa.getMaxHeartrate().intValue() : null);
+        existing.setAverageWatts(sa.getAverageWatts());
+        existing.setMaxWatts(sa.getMaxWatts());
+        existing.setAverageCadence(sa.getAverageCadence());
+        existing.setSufferScore(sa.getSufferScore());
+        existing.setAverageTemp(sa.getAverageTemp());
+        existing.setDescription(sa.getDescription());
+        existing.setCalories(sa.getCalories() != null ? sa.getCalories().intValue() : null);
+
+        if (sa.getMap() != null) {
+            existing.setSummaryPolyline(sa.getMap().getSummaryPolyline());
+            existing.setDetailedPolyline(sa.getMap().getPolyline());
+        }
+
+        activityRepository.save(existing);
+    }
 }
