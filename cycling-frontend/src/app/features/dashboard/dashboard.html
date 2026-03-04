@@ -4,7 +4,18 @@
 
   <main class="main">
 
-    <!-- Header -->
+    <!-- ═══ MÓVIL: Header con saludo ═══ -->
+    <div class="mobile-header">
+      <div>
+        <div class="mobile-greeting">{{ greeting }},</div>
+        <div class="mobile-username">{{ username }}</div>
+      </div>
+      <button class="mobile-sync-btn" (click)="syncStrava()" [disabled]="isSyncing">
+        <span [class.spinning]="isSyncing">↻</span>
+      </button>
+    </div>
+
+    <!-- Header desktop -->
     <div class="top-bar">
       <h1>Dashboard</h1>
       <div class="strava-buttons">
@@ -22,7 +33,7 @@
 
     <div *ngIf="!isLoading">
 
-      <!-- Stats semana / mes / año -->
+      <!-- Stats semana / mes / año (desktop) -->
       <div class="stats-grid" *ngIf="weekStats">
         <div class="stat-card">
           <div class="stat-period">Esta semana</div>
@@ -56,7 +67,7 @@
         </div>
       </div>
 
-      <!-- Comparativa año anterior -->
+      <!-- Comparativa año anterior (desktop) -->
       <div class="year-comparison" *ngIf="lastYearActivities > 0">
         <h2>
           {{ selectedPeriod === 'month' ? 'Este mes' : selectedPeriod === 'year' ? 'Este año' : 'Total' }}
@@ -99,9 +110,8 @@
         </div>
       </div>
 
-      <!-- Gráfico y últimas actividades -->
+      <!-- Gráfico y últimas actividades (desktop) -->
       <div class="bottom-grid">
-
         <div class="card">
           <h2>Actividades por mes</h2>
           <div class="chart-container">
@@ -138,8 +148,110 @@
             </p>
           </div>
         </div>
+      </div>
+
+      <!-- ═══ MÓVIL: Dashboard rediseñado ═══ -->
+      <div class="mobile-dashboard">
+
+
+        <!-- 4 cards pequeñas 2x2 -->
+        <div class="mobile-section-title">Esta semana</div>
+        <div class="mobile-stats-grid" *ngIf="weekStats">
+          <div class="mobile-stat-card">
+            <span class="msc-icon">📍</span>
+            <span class="msc-value">{{ weekStats.totalDistanceKm }}</span>
+            <span class="msc-label">km</span>
+          </div>
+          <div class="mobile-stat-card">
+            <span class="msc-icon">⏱</span>
+            <span class="msc-value">{{ weekStats.totalTime }}</span>
+            <span class="msc-label">tiempo</span>
+          </div>
+          <div class="mobile-stat-card">
+            <span class="msc-icon">⛰</span>
+            <span class="msc-value">{{ weekStats.totalElevation }}</span>
+            <span class="msc-label">m desnivel</span>
+          </div>
+          <div class="mobile-stat-card">
+            <span class="msc-icon">🚴</span>
+            <span class="msc-value">{{ weekStats.totalActivities }}</span>
+            <span class="msc-label">salidas</span>
+          </div>
+        </div>
+
+        <!-- Objetivo semanal + Racha -->
+        <div class="mobile-row-two">
+          <div class="mobile-goal-card">
+            <div class="goal-header">
+              <span class="goal-label">Objetivo semanal</span>
+              <span class="goal-values">{{ weekKm.toFixed(0) }} / {{ weekGoalKm }} km</span>
+            </div>
+            <div class="goal-bar-bg">
+              <div class="goal-bar-fill" [style.width.%]="weekProgress"></div>
+            </div>
+          </div>
+          <div class="mobile-streak-card">
+            <span class="streak-num">{{ streak }}</span>
+            <span class="streak-label">🔥 racha</span>
+          </div>
+        </div>
+
+        <!-- Gráfico semanal por días -->
+        <div class="mobile-card">
+          <div class="mobile-card-header">
+            <span>Esta semana</span>
+          </div>
+          <div class="mobile-bar-chart">
+            <div class="mobile-bar-group" *ngFor="let val of weekBars; let i = index">
+              <div class="mobile-bar-wrap">
+                <div
+                  class="mobile-bar"
+                  [style.height.%]="getBarHeight(val)"
+                  [class.today]="i === getTodayIndex()">
+                </div>
+              </div>
+              <span class="mobile-bar-label" [class.today-label]="i === getTodayIndex()">
+                {{ weekDays[i] }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Última actividad -->
+        <div class="mobile-card" *ngIf="lastActivities.length > 0">
+          <div class="mobile-card-header">
+            <span>Última actividad</span>
+            <a routerLink="/activities" class="mobile-ver-todas">Ver todas →</a>
+          </div>
+          <div class="mobile-last-activity">
+            <div class="mla-top">
+              <span class="mla-icon">
+                {{ lastActivities[0].type === 'Ride' ? '🚴' : lastActivities[0].type === 'Run' ? '🏃' : '🏊' }}
+              </span>
+              <div class="mla-info">
+                <span class="mla-name">{{ lastActivities[0].name }}</span>
+                <span class="mla-date">{{ getRelativeDate(lastActivities[0]) }}</span>
+              </div>
+            </div>
+            <div class="mla-metrics">
+              <div class="mla-metric">
+                <span class="mla-mval">{{ formatKm(lastActivities[0].distance) }}</span>
+                <span class="mla-mlabel">km</span>
+              </div>
+              <div class="mla-metric">
+                <span class="mla-mval">{{ formatTime(lastActivities[0].movingTime) }}</span>
+                <span class="mla-mlabel">tiempo</span>
+              </div>
+              <div class="mla-metric">
+                <span class="mla-mval">{{ lastActivities[0].totalElevationGain || 0 }}</span>
+                <span class="mla-mlabel">m desnivel</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </div>
+
     </div>
 
   </main>

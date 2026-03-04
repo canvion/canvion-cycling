@@ -48,6 +48,22 @@ export class Dashboard implements OnInit {
   monthStats: any = null;
   yearStats: any = null;
 
+  // Móvil — saludo
+  greeting: string = '';
+
+// Móvil — racha de días
+  streak: number = 0;
+
+// Móvil — objetivo semanal
+  weekGoalKm: number = 150;
+  weekKm: number = 0;
+  weekProgress: number = 0;
+
+// Móvil — gráfico semanal por días
+  weekDays: string[] = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  weekBars: number[] = [0, 0, 0, 0, 0, 0, 0];
+  maxBarValue: number = 1;
+
   constructor(
     private activityService: ActivityService,
     private stravaService: StravaService,
@@ -61,6 +77,8 @@ export class Dashboard implements OnInit {
     this.username = this.authService.getUsername() || '';
     this.loadActivities();
     this.loadStats();
+    this.setGreeting();
+    this.loadGoal();
   }
 
   loadActivities(): void {
@@ -104,6 +122,20 @@ export class Dashboard implements OnInit {
 
     this.buildChartData();
     this.calculateYearComparison(this.activities);
+    this.calculateStreak(this.activities);
+    this.calculateWeekBars(this.activities);
+    this.weekKm = this.activities
+      .filter(a => {
+        const d = new Date(a.startDate);
+        const now = new Date();
+        const monday = new Date(now);
+        const day = now.getDay();
+        monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+        monday.setHours(0, 0, 0, 0);
+        return d >= monday;
+      })
+      .reduce((sum, a) => sum + (a.distance / 1000), 0);
+    this.weekProgress = Math.min((this.weekKm / this.weekGoalKm) * 100, 100);
   }
 
   buildChartData(): void {
@@ -228,5 +260,67 @@ export class Dashboard implements OnInit {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     return `${h}h ${m}m`;
+  }
+
+  setGreeting(): void {
+    const hour = new Date().getHours();
+    if (hour < 12) this.greeting = 'Buenos días';
+    else if (hour < 20) this.greeting = 'Buenas tardes';
+    else this.greeting = 'Buenas noches';
+  }
+
+  loadGoal(): void {
+    const saved = localStorage.getItem('weekGoalKm');
+    if (saved) this.weekGoalKm = parseInt(saved, 10);
+  }
+
+  calculateStreak(activities: Activity[]): void {
+    const dates = new Set<number>();
+    activities.forEach(a => {
+      const d = new Date(a.startDate);
+      d.setHours(0, 0, 0, 0);
+      dates.add(d.getTime());
+    });
+    let count = 0;
+    const cur = new Date();
+    cur.setHours(0, 0, 0, 0);
+    while (dates.has(cur.getTime())) {
+      count++;
+      cur.setDate(cur.getDate() - 1);
+    }
+    this.streak = count;
+  }
+
+  calculateWeekBars(activities: Activity[]): void {
+    const now = new Date();
+    const day = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+    monday.setHours(0, 0, 0, 0);
+    const bars = [0, 0, 0, 0, 0, 0, 0];
+    activities.forEach(a => {
+      const d = new Date(a.startDate);
+      d.setHours(0, 0, 0, 0);
+      const diff = Math.floor((d.getTime() - monday.getTime()) / 86400000);
+      if (diff >= 0 && diff < 7) bars[diff] += (a.distance || 0) / 1000;
+    });
+    this.weekBars = bars;
+    this.maxBarValue = Math.max(...bars, 1);
+  }
+
+  getBarHeight(value: number): number {
+    return (value / this.maxBarValue) * 100;
+  }
+
+  getTodayIndex(): number {
+    const d = new Date().getDay();
+    return d === 0 ? 6 : d - 1;
+  }
+
+  getRelativeDate(activity: Activity): string {
+    const diff = Math.floor((Date.now() - new Date(activity.startDate).getTime()) / 86400000);
+    if (diff === 0) return 'Hoy';
+    if (diff === 1) return 'Ayer';
+    return new Date(activity.startDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
   }
 }

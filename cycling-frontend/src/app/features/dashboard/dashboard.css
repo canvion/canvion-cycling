@@ -12,7 +12,7 @@
   overflow-y: auto;
 }
 
-/* Header */
+/* Header desktop */
 .top-bar {
   display: flex;
   align-items: center;
@@ -70,7 +70,7 @@
   border-left: 4px solid #0f3460;
 }
 
-/* ── STATS SEMANA/MES/AÑO ── */
+/* Stats semana/mes/año */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -118,7 +118,7 @@
   flex-shrink: 0;
 }
 
-/* ── COMPARATIVA ── */
+/* Comparativa */
 .year-comparison {
   margin-bottom: 24px;
 }
@@ -165,7 +165,6 @@
 }
 
 .vs { font-size: 12px; color: #aaa; }
-
 .last { font-size: 16px; color: #aaa; }
 
 .diff {
@@ -176,7 +175,7 @@
 
 .diff.positive { color: #16a34a; }
 
-/* ── GRID INFERIOR ── */
+/* Grid inferior */
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -213,7 +212,7 @@
   font-weight: 600;
 }
 
-/* Gráfico */
+/* Gráfico desktop */
 .chart-container {
   width: 100%;
   overflow-x: hidden;
@@ -264,7 +263,7 @@
   margin-top: 6px;
 }
 
-/* Lista actividades */
+/* Lista actividades desktop */
 .activity-item {
   display: flex;
   align-items: center;
@@ -311,12 +310,322 @@
   padding: 20px 0;
 }
 
-/* Responsive */
+/* ═══════════════════════════════════════
+   MÓVIL — ocultar por defecto
+   ═══════════════════════════════════════ */
+
+.mobile-header,
+.mobile-dashboard {
+  display: none;
+}
+
+/* ═══════════════════════════════════════
+   MÓVIL — todo el rediseño
+   ═══════════════════════════════════════ */
+
 @media (max-width: 768px) {
+
   .layout { margin-left: 0; }
   .main { padding: 16px 16px 80px; }
-  .top-bar { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .stats-grid { grid-template-columns: 1fr; }
-  .comparison-grid { grid-template-columns: 1fr; }
-  .bottom-grid { grid-template-columns: 1fr; }
-}
+
+  /* Ocultar secciones desktop */
+  .top-bar,
+  .stats-grid,
+  .year-comparison,
+  .bottom-grid,
+  .sync-message {
+    display: none !important;
+  }
+
+  .mobile-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+   }
+  }
+
+
+
+  /* Mostrar secciones móvil */
+  .mobile-header { display: flex; }
+  .mobile-dashboard { display: block; }
+
+  /* Header */
+  .mobile-header {
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 8px;
+  }
+
+  .mobile-greeting {
+    font-size: 14px;
+    color: #888;
+    font-weight: 400;
+  }
+
+  .mobile-username {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .mobile-sync-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid #e0e0e0;
+    background: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a1a2e;
+  }
+
+  .mobile-sync-btn:disabled { opacity: 0.5; }
+
+  /* 4 cards 2x2 */
+  .mobile-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .msc-icon { font-size: 18px; }
+
+  .msc-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.1;
+  }
+
+  .msc-label {
+    font-size: 11px;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Objetivo + Racha */
+  .mobile-row-two {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .mobile-goal-card {
+    flex: 1;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  }
+
+  .goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .goal-label {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .goal-values {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .goal-bar-bg {
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .goal-bar-fill {
+    height: 100%;
+    background: #fc4c02;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  .mobile-streak-card {
+    width: 80px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .streak-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1;
+  }
+
+  .streak-label {
+    font-size: 11px;
+    color: #aaa;
+  }
+
+  /* Card genérica móvil */
+  .mobile-card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    margin-bottom: 12px;
+  }
+
+  .mobile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a2e;
+  }
+
+  .mobile-ver-todas {
+    font-size: 12px;
+    color: #fc4c02;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Gráfico semanal */
+  .mobile-bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 80px;
+  }
+
+  .mobile-bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  .mobile-bar-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .mobile-bar {
+    width: 100%;
+    background: #e8edf5;
+    border-radius: 4px 4px 0 0;
+    min-height: 3px;
+    transition: height 0.3s ease;
+  }
+
+  .mobile-bar.today { background: #fc4c02; }
+
+  .mobile-bar-label {
+    font-size: 10px;
+    color: #bbb;
+    margin-top: 5px;
+  }
+
+  .mobile-bar-label.today-label {
+    color: #fc4c02;
+    font-weight: 700;
+  }
+
+  /* Última actividad */
+  .mla-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .mla-icon { font-size: 28px; }
+
+  .mla-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mla-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+  }
+
+  .mla-date {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+
+  .mla-metrics {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 12px;
+    border-top: 1px solid #f5f5f5;
+  }
+
+  .mla-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .mla-mval {
+    font-size: 17px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .mla-mlabel {
+    font-size: 10px;
+    color: #aaa;
+    text-transform: uppercase;
+  }
+
+  /* Animación sync */
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .spinning {
+    animation: spin 1s linear infinite;
+    display: inline-block;
+  }
