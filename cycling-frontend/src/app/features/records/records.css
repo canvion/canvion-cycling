@@ -112,5 +112,5 @@
 
 @media (max-width: 768px) {
   .layout { margin-left: 0; }
-  .main { padding: 60px 16px 16px 16px; } /* 60px arriba para el hamburguesa */
+  .main { padding: 16px 16px 80px; }
 }

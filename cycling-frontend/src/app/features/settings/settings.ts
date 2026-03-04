@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ZonesService } from '../../core/services/zona.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Sidebar } from '../../shared/sidebar';
+import { BottomNav } from '../../shared/bottom-nav';
 
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, Sidebar],
+  imports: [CommonModule, RouterLink, FormsModule, Sidebar, BottomNav],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
 })

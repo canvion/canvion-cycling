@@ -8,11 +8,12 @@ import { StatsService } from '../../core/services/stats.service';
 import { Activity } from '../../models/activity.model';
 import { SpinnerComponent } from '../../shared/spinner.component';
 import { Sidebar } from '../../shared/sidebar';
+import { BottomNav } from '../../shared/bottom-nav';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar],
+  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar, BottomNav],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })

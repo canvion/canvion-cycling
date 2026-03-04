@@ -7,11 +7,12 @@ import { AuthService } from '../../../core/services/auth.service';
 import { Activity } from '../../../models/activity.model';
 import { SpinnerComponent } from '../../../shared/spinner.component';
 import { Sidebar } from '../../../shared/sidebar';
+import { BottomNav } from '../../../shared/bottom-nav';
 
 @Component({
   selector: 'app-activity-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, FormsModule, Sidebar],
+  imports: [CommonModule, RouterLink, SpinnerComponent, FormsModule, Sidebar, BottomNav],
   templateUrl: './activity-list.html',
   styleUrl: './activity-list.css'
 })

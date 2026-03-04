@@ -6,11 +6,12 @@ import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
 import { SpinnerComponent } from '../../shared/spinner.component';
 import { Sidebar } from '../../shared/sidebar';
+import { BottomNav } from '../../shared/bottom-nav';
 
 @Component({
   selector: 'app-stats',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar],
+  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar, BottomNav],
   templateUrl: './stats.html',
   styleUrl: './stats.css'
 })

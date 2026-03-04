@@ -128,5 +128,5 @@
 
 @media (max-width: 768px) {
   .layout { margin-left: 0; }
-  .main { padding: 60px 16px 16px; }
+  .main { padding: 16px 16px 80px; }
 }

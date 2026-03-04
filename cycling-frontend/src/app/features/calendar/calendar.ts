@@ -6,12 +6,13 @@ import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
 import { Sidebar } from '../../shared/sidebar';
 import { SpinnerComponent } from '../../shared/spinner.component';
+import { BottomNav } from '../../shared/bottom-nav';
 
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, RouterLink, Sidebar, SpinnerComponent],
+  imports: [CommonModule, RouterLink, Sidebar, SpinnerComponent, BottomNav],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css'
 })
