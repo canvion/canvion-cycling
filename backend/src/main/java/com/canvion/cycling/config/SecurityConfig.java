@@ -44,6 +44,9 @@ public class SecurityConfig {
                         // Rutas públicas de Strava
                         .requestMatchers("/api/strava/callback").permitAll()
 
+                        // Webhook público (Strava lo llama sin token)
+                        .requestMatchers("/api/webhooks/strava").permitAll()
+
                         // ========================================
                         // ACTUATOR - Health checks públicos
                         // ========================================
