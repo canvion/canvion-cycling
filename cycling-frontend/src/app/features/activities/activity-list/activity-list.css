@@ -1,4 +1,4 @@
-/* Layout con sidebar (igual que dashboard) */
+/* Layout */
 .layout {
   display: flex;
   min-height: 100vh;
@@ -7,14 +7,13 @@
   transition: margin-left 0.3s;
 }
 
-
-/* ── MAIN ── */
 .main {
   flex: 1;
   padding: 32px;
   overflow-y: auto;
 }
 
+/* Header desktop */
 .top-bar {
   display: flex;
   align-items: center;
@@ -29,22 +28,7 @@
   margin: 0;
 }
 
-.btn-new {
-  background: #0f3460;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-new:hover {
-  background: #1a4a7a;
-}
-
-/* ── FILTROS ── */
+/* Filtros */
 .filters {
   display: flex;
   gap: 12px;
@@ -85,14 +69,6 @@
   color: #0f3460;
 }
 
-/* Loading */
-.loading {
-  text-align: center;
-  padding: 60px;
-  color: #666;
-  font-size: 16px;
-}
-
 .no-data {
   text-align: center;
   padding: 60px;
@@ -102,7 +78,9 @@
   border-radius: 12px;
 }
 
-/* ── CARDS DE ACTIVIDAD ── */
+/* ═══ DESKTOP: lista horizontal ═══ */
+.mobile-list { display: none; }
+
 .activity-card {
   background: white;
   border-radius: 12px;
@@ -155,7 +133,6 @@
   margin-top: 2px;
 }
 
-/* Métricas */
 .activity-metrics {
   display: flex;
   gap: 24px;
@@ -181,7 +158,6 @@
   margin-top: 2px;
 }
 
-/* Badge */
 .activity-badge {
   background: #e8f4fd;
   color: #fc4c02;
@@ -192,12 +168,6 @@
   flex-shrink: 0;
 }
 
-.activity-badge.manual {
-  background: #f0fdf4;
-  color: #16a34a;
-}
-
-/* Acciones */
 .activity-actions {
   display: flex;
   gap: 8px;
@@ -215,24 +185,7 @@
   transition: background 0.2s;
 }
 
-.btn-view:hover {
-  background: #e0e7f0;
-}
-
-.btn-edit {
-  background: #0f3460;
-  color: white;
-  padding: 6px 14px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-edit:hover {
-  background: #1a4a7a;
-}
+.btn-view:hover { background: #e0e7f0; }
 
 .btn-delete {
   background: #fee2e2;
@@ -246,19 +199,200 @@
   transition: background 0.2s;
 }
 
-.btn-delete:hover {
-  background: #fecaca;
+.btn-delete:hover { background: #fecaca; }
+
+/* ═══ PAGINACIÓN ═══ */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding-bottom: 8px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .main { padding: 16px; }
-  .activity-metrics { display: none; }
-  .activity-card { flex-wrap: wrap; }
+.page-btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #1a1a2e;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
 }
 
+.page-btn:hover:not(:disabled) {
+  border-color: #0f3460;
+  color: #0f3460;
+}
+
+.page-btn.active {
+  background: #0f3460;
+  border-color: #0f3460;
+  color: white;
+  font-weight: 700;
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ═══════════════════════════════════════
+   MÓVIL
+   ═══════════════════════════════════════ */
+
 @media (max-width: 768px) {
+
   .layout { margin-left: 0; }
-  .main { padding: 60px 16px 16px 16px; } /* 60px arriba para el hamburguesa */
+  .main { padding: 16px 16px 80px; }
+
+  .top-bar { display: none; }
+  .desktop-list { display: none; }
+  .mobile-list { display: block; }
+
+  /* Filtros */
+  .filters {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .filters select,
+  .filters input {
+    font-size: 13px;
+    padding: 7px 10px;
+    flex: 1;
+  }
+
+  .btn-clear {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+
+  /* Paginación móvil */
+  .pagination {
+    margin-top: 16px;
+    gap: 5px;
+  }
+
+  .page-btn {
+    min-width: 38px;
+    height: 38px;
+    font-size: 14px;
+  }
+
+  /* ── Card móvil ── */
+  .mobile-activity-card {
+    display: block;
+    background: white;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s;
+  }
+
+  .mobile-activity-card:active {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  }
+
+  .mac-top {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .mac-route {
+    width: 80px;
+    height: 50px;
+    flex-shrink: 0;
+    background: #f8f9fc;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mac-route svg {
+    width: 80px;
+    height: 50px;
+  }
+
+  .mac-no-route {
+    font-size: 22px;
+  }
+
+  .mac-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .mac-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mac-date {
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .mac-type {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  .mac-divider {
+    height: 1px;
+    background: #f4f4f4;
+    margin-bottom: 12px;
+  }
+
+  .mac-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .mac-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+  }
+
+  .mac-mval {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  .mac-mlabel {
+    font-size: 10px;
+    color: #bbb;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .mac-metric-sep {
+    width: 1px;
+    height: 24px;
+    background: #f0f0f0;
+  }
 }

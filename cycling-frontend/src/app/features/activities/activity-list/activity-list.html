@@ -1,12 +1,10 @@
 <div class="layout">
 
-  <!-- Sidebar -->
   <app-sidebar></app-sidebar>
 
-  <!-- Contenido principal -->
   <main class="main">
 
-    <!-- Header -->
+    <!-- Header desktop -->
     <div class="top-bar">
       <h1>Actividades</h1>
     </div>
@@ -29,52 +27,130 @@
       <button class="btn-clear" (click)="clearFilters()">Limpiar filtros</button>
     </div>
 
-    <!-- Loading -->
     <app-spinner *ngIf="isLoading"></app-spinner>
 
-    <!-- Lista -->
     <div *ngIf="!isLoading">
 
       <div class="no-data" *ngIf="filteredActivities.length === 0">
         No hay actividades. ¡Sincroniza con Strava desde el dashboard!
       </div>
 
-      <div class="activity-card" *ngFor="let activity of filteredActivities">
-
-        <!-- Icono y nombre -->
-        <div class="activity-left">
-          <div class="activity-icon">{{ getIcon(activity.type) }}</div>
-          <div class="activity-info">
-            <span class="activity-name">{{ activity.name }}</span>
-            <span class="activity-date">{{ activity.startDate | date:'dd/MM/yyyy' }}</span>
+      <!-- ═══ DESKTOP: cards horizontales ═══ -->
+      <div class="desktop-list">
+        <div class="activity-card" *ngFor="let activity of filteredActivities">
+          <div class="activity-left">
+            <div class="activity-icon">{{ getIcon(activity.type) }}</div>
+            <div class="activity-info">
+              <span class="activity-name">{{ activity.name }}</span>
+              <span class="activity-date">{{ activity.startDate | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          <div class="activity-metrics">
+            <div class="metric">
+              <span class="metric-value">{{ formatKm(activity.distance) }}</span>
+              <span class="metric-label">km</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">{{ formatTime(activity.movingTime) }}</span>
+              <span class="metric-label">tiempo</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">{{ activity.totalElevationGain }}</span>
+              <span class="metric-label">m desnivel</span>
+            </div>
+          </div>
+          <div class="activity-badge">Strava</div>
+          <div class="activity-actions">
+            <a [routerLink]="['/activities', activity.id]" class="btn-view">Ver</a>
+            <button class="btn-delete" (click)="deleteActivity(activity.id, activity.name)">Borrar</button>
           </div>
         </div>
+      </div>
 
-        <!-- Métricas -->
-        <div class="activity-metrics">
-          <div class="metric">
-            <span class="metric-value">{{ formatKm(activity.distance) }}</span>
-            <span class="metric-label">km</span>
+      <!-- ═══ MÓVIL: cards estilo Strava ═══ -->
+      <div class="mobile-list">
+        <a
+          class="mobile-activity-card"
+          [routerLink]="['/activities', activity.id]"
+          *ngFor="let activity of filteredActivities">
+
+          <div class="mac-top">
+            <div class="mac-route">
+              <svg
+                *ngIf="activity.summaryPolyline"
+                viewBox="0 0 80 50"
+                preserveAspectRatio="xMidYMid meet">
+                <polyline
+                  [attr.points]="getRoutePath(activity.summaryPolyline)"
+                  fill="none"
+                  stroke="#fc4c02"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <div class="mac-no-route" *ngIf="!activity.summaryPolyline">
+                {{ getIcon(activity.type) }}
+              </div>
+            </div>
+
+            <div class="mac-info">
+              <span class="mac-name">{{ activity.name }}</span>
+              <span class="mac-date">{{ getRelativeDate(activity.startDate) }}</span>
+              <span class="mac-type">{{ getIcon(activity.type) }} {{ activity.type }}</span>
+            </div>
           </div>
-          <div class="metric">
-            <span class="metric-value">{{ formatTime(activity.movingTime) }}</span>
-            <span class="metric-label">tiempo</span>
+
+          <div class="mac-divider"></div>
+
+          <div class="mac-metrics">
+            <div class="mac-metric">
+              <span class="mac-mval">{{ formatKm(activity.distance) }}</span>
+              <span class="mac-mlabel">km</span>
+            </div>
+            <div class="mac-metric-sep"></div>
+            <div class="mac-metric">
+              <span class="mac-mval">{{ formatTime(activity.movingTime) }}</span>
+              <span class="mac-mlabel">tiempo</span>
+            </div>
+            <div class="mac-metric-sep"></div>
+            <div class="mac-metric">
+              <span class="mac-mval">{{ activity.totalElevationGain || 0 }}</span>
+              <span class="mac-mlabel">m desnivel</span>
+            </div>
+            <div class="mac-metric-sep" *ngIf="activity.averageHeartrate"></div>
+            <div class="mac-metric" *ngIf="activity.averageHeartrate">
+              <span class="mac-mval">{{ activity.averageHeartrate }}</span>
+              <span class="mac-mlabel">fc avg</span>
+            </div>
           </div>
-          <div class="metric">
-            <span class="metric-value">{{ activity.totalElevationGain }}</span>
-            <span class="metric-label">m desnivel</span>
-          </div>
-        </div>
 
-        <!-- Badge strava -->
-        <div class="activity-badge">Strava</div>
+        </a>
+      </div>
 
-        <!-- Acciones -->
-        <div class="activity-actions">
-          <a [routerLink]="['/activities', activity.id]" class="btn-view">Ver</a>
-          <button class="btn-delete" (click)="deleteActivity(activity.id, activity.name)">Borrar</button>
-        </div>
+      <!-- ═══ PAGINACIÓN ═══ -->
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button
+          class="page-btn"
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 0">
+          ←
+        </button>
 
+        <button
+          *ngFor="let p of getPageNumbers()"
+          class="page-btn"
+          [class.active]="p === currentPage"
+          (click)="goToPage(p)">
+          {{ p + 1 }}
+        </button>
+
+        <button
+          class="page-btn"
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage === totalPages - 1">
+          →
+        </button>
       </div>
 
     </div>

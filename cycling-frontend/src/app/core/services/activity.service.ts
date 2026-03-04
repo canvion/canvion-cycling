@@ -35,4 +35,9 @@ export class ActivityService {
   deleteActivity(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/activities/${id}`);
   }
+  getActivitiesPaginated(page: number, size: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/activities?page=${page}&size=${size}&sortBy=startDate&direction=desc`
+    );
+  }
 }
