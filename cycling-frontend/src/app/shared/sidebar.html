@@ -4,7 +4,7 @@
 <div class="overlay" *ngIf="isMobileOpen" (click)="toggleMobile()"></div>
 
 
-<aside class="sidebar" [class.collapsed]="isCollapsed">
+<aside class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="isMobileOpen">
 
   <!-- Botón colapsar -->
   <button class="toggle-btn" (click)="toggle()">
