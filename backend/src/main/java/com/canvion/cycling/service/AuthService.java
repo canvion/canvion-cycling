@@ -113,4 +113,26 @@ public class AuthService {
         user.setUpdatedAt(LocalDateTime.now());
         userRepository.save(user);
     }
+
+    public AuthResponse refresh(String refreshToken) {
+        // Extraer el username del refresh token
+        String username = jwtService.extractUsername(refreshToken);
+
+        // Cargar el usuario
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        // Verificar que el refresh token es válido
+        if (!jwtService.isTokenValid(refreshToken, userDetails)) {
+            throw new RuntimeException("Refresh token inválido o expirado");
+        }
+
+        // Generar tokens nuevos
+        String newToken = jwtService.generateToken(userDetails);
+        String newRefreshToken = jwtService.generateRefreshToken(userDetails);
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return new AuthResponse(newToken, newRefreshToken, user.getId(), user.getUsername(), user.getEmail());
+    }
 }
