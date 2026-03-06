@@ -63,4 +63,18 @@ public class AuthController {
             ));
         }
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody Map<String, String> request) {
+        String refreshToken = request.get("refreshToken");
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "refreshToken requerido"));
+        }
+        try {
+            AuthResponse response = authService.refresh(refreshToken);
+            return ResponseEntity.ok(response);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
+        }
+    }
 }

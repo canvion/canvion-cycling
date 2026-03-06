@@ -58,6 +58,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").authenticated()
                         // ========================================
 
+                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/health", "/api/auth/refresh").permitAll()
+
                         // Todas las demás rutas requieren autenticación
                         .anyRequest().authenticated()
                 )
