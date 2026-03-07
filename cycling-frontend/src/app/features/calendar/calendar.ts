@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
@@ -12,7 +12,7 @@ import { BottomNav } from '../../shared/bottom-nav';
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule, RouterLink, Sidebar, SpinnerComponent, BottomNav],
+  imports: [CommonModule, Sidebar, SpinnerComponent, BottomNav],
   templateUrl: './calendar.html',
   styleUrl: './calendar.css'
 })

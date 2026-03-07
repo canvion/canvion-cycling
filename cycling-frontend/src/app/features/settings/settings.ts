@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ZonesService } from '../../core/services/zona.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -10,7 +10,7 @@ import { BottomNav } from '../../shared/bottom-nav';
 @Component({
   selector: 'app-settings',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, Sidebar, BottomNav],
+  imports: [CommonModule, FormsModule, Sidebar, BottomNav],
   templateUrl: './settings.html',
   styleUrl: './settings.css'
 })

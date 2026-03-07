@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { ActivityService } from '../../core/services/activity.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Activity } from '../../models/activity.model';
@@ -11,7 +11,7 @@ import { BottomNav } from '../../shared/bottom-nav';
 @Component({
   selector: 'app-stats',
   standalone: true,
-  imports: [CommonModule, RouterLink, SpinnerComponent, Sidebar, BottomNav],
+  imports: [CommonModule, SpinnerComponent, Sidebar, BottomNav],
   templateUrl: './stats.html',
   styleUrl: './stats.css'
 })
