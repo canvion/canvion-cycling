@@ -2,13 +2,20 @@
 
 Web application for cycling training tracking with Strava integration.
 
+🌐 **Live demo:** [http://161.35.209.217/login](http://161.35.209.217/login)
+
+---
+
 ## Features
 
 - 🚴 Track cycling activities (manual or Strava sync)
-- 📊 Detailed statistics (distance, speed, heart rate, cadence, temperature)
-- 🗺️ GPS route visualization
-- 📈 Training analytics
-- 🔐 Secure OAuth2 Strava integration
+- 📊 Detailed statistics (distance, time, elevation, heart rate, cadence)
+- 🗺️ GPS route visualization with Leaflet
+- 📈 Weekly, monthly and yearly analytics
+- 🔥 Training streaks and weekly goal tracking
+- 🔐 Secure JWT authentication + OAuth2 Strava integration
+- 📱 Responsive design (mobile & desktop)
+- 🔄 Automatic activity sync via Strava webhooks
 
 ## Tech Stack
 
@@ -18,6 +25,7 @@ Web application for cycling training tracking with Strava integration.
 - PostgreSQL 15
 - JWT Authentication
 - OAuth2 (Strava)
+- Spring Boot Actuator
 
 ### Frontend
 - Angular 17+
@@ -25,7 +33,14 @@ Web application for cycling training tracking with Strava integration.
 - Leaflet (maps)
 - Chart.js (graphs)
 
-## Setup
+### Infrastructure
+- DigitalOcean (Ubuntu 24)
+- Nginx + Certbot
+- systemd service
+
+---
+
+## Local Setup
 
 ### Prerequisites
 - Java 21+
@@ -33,7 +48,7 @@ Web application for cycling training tracking with Strava integration.
 - Docker & Docker Compose
 - Strava API credentials
 
-### Backend Setup
+### Backend
 
 1. Clone the repository
 ```bash
@@ -48,10 +63,10 @@ cp application.properties.example application.properties
 ```
 
 3. Configure your secrets in `application.properties`:
-- Database credentials
-- JWT secret (generate with `openssl rand -base64 64`)
-- Encryption key (32 characters)
-- Strava API credentials
+   - Database credentials
+   - JWT secret (`openssl rand -base64 64`)
+   - Encryption key (32 characters)
+   - Strava API credentials
 
 4. Start PostgreSQL
 ```bash
@@ -64,42 +79,67 @@ cd backend
 mvn spring-boot:run
 ```
 
-### Frontend Setup
+### Frontend
+
 ```bash
-cd frontend
+cd cycling-frontend
 npm install
 ng serve
 ```
 
 Navigate to `http://localhost:4200`
 
+---
+
 ## Strava API Setup
 
-1. Create app at https://www.strava.com/settings/api
+1. Create app at [https://www.strava.com/settings/api](https://www.strava.com/settings/api)
 2. Set authorization callback: `http://localhost:8080/api/strava/callback`
 3. Copy Client ID and Client Secret to `application.properties`
 
+---
+
 ## Production Deployment
 
-Use environment variables for all secrets:
-- `DATABASE_URL`
-- `DATABASE_USERNAME`
-- `DATABASE_PASSWORD`
-- `JWT_SECRET`
-- `ENCRYPTION_KEY`
-- `STRAVA_CLIENT_ID`
-- `STRAVA_CLIENT_SECRET`
-- `STRAVA_REDIRECT_URI`
-- `FRONTEND_URL`
+### Environment variables required
 
-Run with production profile:
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection URL |
+| `DATABASE_USERNAME` | Database user |
+| `DATABASE_PASSWORD` | Database password |
+| `JWT_SECRET` | JWT signing secret |
+| `ENCRYPTION_KEY` | 32-character encryption key |
+| `STRAVA_CLIENT_ID` | Strava app client ID |
+| `STRAVA_CLIENT_SECRET` | Strava app client secret |
+| `STRAVA_REDIRECT_URI` | OAuth callback URL |
+| `FRONTEND_URL` | Frontend base URL |
+
+### Build and deploy
+
 ```bash
-java -jar -Dspring.profiles.active=prod cycling-backend.jar
+# Backend
+cd backend
+mvn clean package -DskipTests
+systemctl restart canvion-cycling
+
+# Frontend
+cd cycling-frontend
+ng build --configuration production
+scp -r dist/cycling-frontend/browser/* user@server:/var/www/canvion-cycling/
 ```
+
+### Health check
+
+```bash
+curl http://localhost:8080/actuator/health
+```
+
+---
 
 ## Author
 
-Adrian Cervera - DAW Student
+Adrian Cervera — DAW Student
 
 ## License
 
