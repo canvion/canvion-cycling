@@ -10,9 +10,12 @@
         <div class="mobile-greeting">{{ greeting }},</div>
         <div class="mobile-username">{{ username }}</div>
       </div>
-      <button class="mobile-sync-btn" (click)="syncStrava()" [disabled]="isSyncing">
-        <span [class.spinning]="isSyncing">↻</span>
-      </button>
+      <div class="header-actions">
+        <button class="btn-strava-text" (click)="connectStrava()">Conectar Strava</button>
+        <button class="mobile-sync-btn" (click)="syncStrava()" [disabled]="isSyncing" title="Sincronizar">
+          <span [class.spinning]="isSyncing">↻</span>
+        </button>
+      </div>
     </div>
 
     <!-- Header desktop -->
