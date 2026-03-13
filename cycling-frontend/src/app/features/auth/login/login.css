@@ -15,7 +15,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.6); 
 }
 
 /* Texto CANVION vertical a la izquierda */
@@ -45,7 +45,7 @@
   padding: 48px 40px;
   width: 100%;
   max-width: 420px;
-  margin-right: 80px;
+  margin-right: 120px;
 }
 
 /* Cabecera */
