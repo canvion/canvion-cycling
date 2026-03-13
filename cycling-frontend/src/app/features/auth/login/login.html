@@ -1,29 +1,25 @@
 <div class="page">
 
+  <!-- Texto vertical izquierda -->
+  <div class="brand-vertical">CANVION</div>
+
+  <!-- Tarjeta derecha -->
   <div class="card">
 
-    <!-- Logo y título -->
     <div class="header">
-      <div class="logo">🚴</div>
       <h1>Canvion Cycling</h1>
       <p>Inicia sesión en tu cuenta</p>
     </div>
 
-    <!-- Mensaje de error -->
     <div class="error" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
 
-    <!-- Formulario -->
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
       <div class="field">
         <label>Usuario o Email</label>
-        <input
-          type="text"
-          formControlName="usernameOrEmail"
-          placeholder="tu@email.com"
-        />
+        <input type="text" formControlName="usernameOrEmail" placeholder="tu@email.com" />
         <span class="field-error" *ngIf="loginForm.get('usernameOrEmail')?.invalid && loginForm.get('usernameOrEmail')?.touched">
           Este campo es obligatorio
         </span>
@@ -31,11 +27,7 @@
 
       <div class="field">
         <label>Contraseña</label>
-        <input
-          type="password"
-          formControlName="password"
-          placeholder="••••••••"
-        />
+        <input type="password" formControlName="password" placeholder="••••••••" />
         <span class="field-error" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
           Mínimo 6 caracteres
         </span>
@@ -48,11 +40,9 @@
 
     </form>
 
-    <!-- Link a registro -->
     <p class="register-link">
       ¿No tienes cuenta? <a routerLink="/register">Regístrate</a>
     </p>
 
   </div>
-
 </div>
