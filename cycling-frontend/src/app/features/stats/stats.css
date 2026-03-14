@@ -104,11 +104,11 @@
 }
 
 .bar-orange {
-  background: #fc4c02;
+  background: #1d4ed8;
 }
 
 .bar-green {
-  background: #16a34a;
+  background: #2563eb;
 }
 
 .bar-label {
@@ -118,7 +118,7 @@
 }
 
 .bar-purple {
-  background: #7c3aed;
+  background: #60a5fa;
 }
 
 @media (max-width: 768px) {
