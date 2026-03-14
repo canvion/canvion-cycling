@@ -1,56 +1,45 @@
-<button class="hamburger" (click)="toggleMobile()">☰</button>
+<aside class="sidebar" [class.collapsed]="isCollapsed">
 
-<!-- Overlay oscuro al abrir el menú -->
-<div class="overlay" *ngIf="isMobileOpen" (click)="toggleMobile()"></div>
-
-
-<aside class="sidebar" [class.collapsed]="isCollapsed" [class.mobile-open]="isMobileOpen">
-
-  <!-- Botón colapsar -->
-  <button class="toggle-btn" (click)="toggle()">
-    {{ isCollapsed ? '→' : '←' }}
-  </button>
-
-  <!-- Logo -->
-  <div class="sidebar-logo" *ngIf="!isCollapsed">🚴 Canvion</div>
-  <div class="sidebar-logo-small" *ngIf="isCollapsed">🚴</div>
-
-  <!-- Navegación -->
-  <nav>
-    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Dashboard' : ''">
-      <span class="nav-icon">📊</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
-    </a>
-    <a routerLink="/activities" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Actividades' : ''">
-      <span class="nav-icon">🏃</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Actividades</span>
-    </a>
-    <a routerLink="/calendar" routerLinkActive="active" class="nav-item">
-      <span class="nav-icon">📅</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Calendario</span>
-    </a>
-    <a routerLink="/records" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Récords' : ''">
-      <span class="nav-icon">🏆</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Récords</span>
-    </a>
-    <a routerLink="/stats" routerLinkActive="active" class="nav-item" [title]="isCollapsed ? 'Estadísticas' : ''">
-      <span class="nav-icon">📈</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Estadísticas</span>
-    </a>
-    <a routerLink="/settings" routerLinkActive="active" class="nav-item">
-      <span class="nav-icon">⚙️</span>
-      <span class="nav-text" *ngIf="!isCollapsed">Ajustes</span>
-    </a>
-  </nav>
-
-  <!-- Usuario y logout -->
-  <div class="sidebar-bottom">
-    <span class="sidebar-user" *ngIf="!isCollapsed">👤 {{ username }}</span>
-    <button class="btn-logout" (click)="logout()" [title]="isCollapsed ? 'Salir' : ''">
-      <span *ngIf="!isCollapsed">Salir</span>
-      <span *ngIf="isCollapsed">🚪</span>
+  <div class="sidebar-header">
+    <span class="sidebar-logo" *ngIf="!isCollapsed">Canvion</span>
+    <button class="toggle-btn" (click)="toggle()">
+      {{ isCollapsed ? '→' : '←' }}
     </button>
   </div>
 
+  <nav>
+    <a routerLink="/dashboard" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Dashboard</span>
+      <span class="nav-icon" *ngIf="isCollapsed">D</span>
+    </a>
+    <a routerLink="/activities" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Actividades</span>
+      <span class="nav-icon" *ngIf="isCollapsed">A</span>
+    </a>
+    <a routerLink="/calendar" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Calendario</span>
+      <span class="nav-icon" *ngIf="isCollapsed">C</span>
+    </a>
+    <a routerLink="/records" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Récords</span>
+      <span class="nav-icon" *ngIf="isCollapsed">R</span>
+    </a>
+    <a routerLink="/stats" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Estadísticas</span>
+      <span class="nav-icon" *ngIf="isCollapsed">E</span>
+    </a>
+    <a routerLink="/settings" routerLinkActive="active" class="nav-item">
+      <span class="nav-text" *ngIf="!isCollapsed">Ajustes</span>
+      <span class="nav-icon" *ngIf="isCollapsed">⚙</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <span class="sidebar-user" *ngIf="!isCollapsed">{{ username }}</span>
+    <button class="btn-logout" (click)="logout()">
+      <span *ngIf="!isCollapsed">Salir</span>
+      <span *ngIf="isCollapsed">←</span>
+    </button>
+  </div>
 
 </aside>
