@@ -4,7 +4,7 @@
 
   <main class="main">
 
-    <!-- ═══ MÓVIL: Header con saludo ═══ -->
+    <!-- Header -->
     <div class="mobile-header">
       <div>
         <div class="mobile-greeting">{{ greeting }},</div>
@@ -18,17 +18,6 @@
       </div>
     </div>
 
-    <!-- Header desktop -->
-    <div class="top-bar">
-      <h1>Dashboard</h1>
-      <div class="strava-buttons">
-        <button class="btn-strava" (click)="connectStrava()">🔗 Conectar Strava</button>
-        <button class="btn-sync" (click)="syncStrava()" [disabled]="isSyncing">
-          {{ isSyncing ? 'Sincronizando...' : '🔄 Sincronizar' }}
-        </button>
-      </div>
-    </div>
-
     <!-- Mensaje sincronización -->
     <div class="sync-message" *ngIf="syncMessage">{{ syncMessage }}</div>
 
@@ -36,7 +25,7 @@
 
     <div *ngIf="!isLoading">
 
-      <!-- Stats semana / mes / año (desktop) -->
+      <!-- Stats semana / mes / año -->
       <div class="stats-grid" *ngIf="weekStats">
         <div class="stat-card">
           <div class="stat-period">Esta semana</div>
@@ -70,7 +59,7 @@
         </div>
       </div>
 
-      <!-- Comparativa año anterior (desktop) -->
+      <!-- Comparativa año anterior -->
       <div class="year-comparison" *ngIf="lastYearActivities > 0">
         <h2>
           {{ selectedPeriod === 'month' ? 'Este mes' : selectedPeriod === 'year' ? 'Este año' : 'Total' }}
@@ -113,7 +102,7 @@
         </div>
       </div>
 
-      <!-- Gráfico y últimas actividades (desktop) -->
+      <!-- Gráfico y últimas actividades -->
       <div class="bottom-grid">
         <div class="card">
           <h2>Actividades por mes</h2>
@@ -153,11 +142,9 @@
         </div>
       </div>
 
-      <!-- ═══ MÓVIL: Dashboard rediseñado ═══ -->
+      <!-- MÓVIL -->
       <div class="mobile-dashboard">
 
-
-        <!-- 4 cards pequeñas 2x2 -->
         <div class="mobile-section-title">Esta semana</div>
         <div class="mobile-stats-grid" *ngIf="weekStats">
           <div class="mobile-stat-card">
@@ -182,7 +169,6 @@
           </div>
         </div>
 
-        <!-- Objetivo semanal + Racha -->
         <div class="mobile-row-two">
           <div class="mobile-goal-card">
             <div class="goal-header">
@@ -195,11 +181,10 @@
           </div>
           <div class="mobile-streak-card">
             <span class="streak-num">{{ streak }}</span>
-            <span class="streak-label">🔥 racha</span>
+            <span class="streak-label">racha</span>
           </div>
         </div>
 
-        <!-- Gráfico semanal por días -->
         <div class="mobile-card">
           <div class="mobile-card-header">
             <span>Esta semana</span>
@@ -207,8 +192,7 @@
           <div class="mobile-bar-chart">
             <div class="mobile-bar-group" *ngFor="let val of weekBars; let i = index">
               <div class="mobile-bar-wrap">
-                <div
-                  class="mobile-bar"
+                <div class="mobile-bar"
                   [style.height.%]="getBarHeight(val)"
                   [class.today]="i === getTodayIndex()">
                 </div>
@@ -220,7 +204,6 @@
           </div>
         </div>
 
-        <!-- Última actividad -->
         <div class="mobile-card" *ngIf="lastActivities.length > 0">
           <div class="mobile-card-header">
             <span>Última actividad</span>

@@ -1,63 +1,67 @@
 .layout {
   display: flex;
   min-height: 100vh;
-  background: #f4f6fb;
+  background: #ffffff;
   margin-left: 220px;
   transition: margin-left 0.3s;
 }
 
 .main {
   flex: 1;
-  padding: 32px;
+  padding: 48px;
   overflow-y: auto;
+  max-width: 1100px;
 }
 
-/* Header móvil — visible siempre */
+/* Header */
 .mobile-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
+  align-items: flex-start;
+  margin-bottom: 48px;
 }
 
 .mobile-greeting {
   font-size: 14px;
-  color: #888;
+  color: #aaa;
   font-weight: 400;
+  margin-bottom: 4px;
 }
 
 .mobile-username {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   color: #1a1a2e;
+  letter-spacing: -1px;
 }
 
 .header-actions {
   display: flex;
   gap: 8px;
   align-items: center;
+  padding-top: 8px;
 }
 
-.btn-strava-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1.5px solid #fc4c02;
-  background: white;
-  font-size: 16px;
+.btn-strava-text {
+  background: #1a1a2e;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  transition: opacity 0.2s;
 }
 
-.btn-strava-icon:hover { background: #fff5f0; }
+.btn-strava-text:hover { opacity: 0.8; }
 
 .mobile-sync-btn {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  border: 1.5px solid #e0e0e0;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
   background: white;
   font-size: 18px;
   cursor: pointer;
@@ -65,82 +69,54 @@
   align-items: center;
   justify-content: center;
   color: #1a1a2e;
+  transition: border-color 0.2s;
 }
 
-.mobile-sync-btn:disabled { opacity: 0.5; }
+.mobile-sync-btn:hover { border-color: #1a1a2e; }
+.mobile-sync-btn:disabled { opacity: 0.4; }
 
-/* Header desktop — oculto */
 .top-bar { display: none; }
 
-.strava-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.btn-strava {
-  background: #fc4c02;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-strava:hover { background: #e04302; }
-
-.btn-sync {
-  background: #0f3460;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-sync:hover:not(:disabled) { background: #1a4a7a; }
-.btn-sync:disabled { opacity: 0.6; cursor: not-allowed; }
-
 .sync-message {
-  background: white;
+  background: #f9f9f9;
   padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 6px;
+  margin-bottom: 32px;
   font-size: 14px;
-  border-left: 4px solid #0f3460;
+  border-left: 3px solid #1a1a2e;
+  color: #555;
 }
 
 /* Stats semana/mes/año */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-bottom: 24px;
+  gap: 1px;
+  background: #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 48px;
 }
 
 .stat-card {
   background: white;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 28px 24px;
 }
 
 .stat-period {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 700;
   color: #1a1a2e;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 4px;
 }
 
 .stat-dates {
-  font-size: 12px;
-  color: #aaa;
-  margin-bottom: 16px;
+  font-size: 11px;
+  color: #bbb;
+  margin-bottom: 20px;
 }
 
 .stat-rows {
@@ -154,61 +130,66 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #333;
+  color: #444;
 }
 
 .stat-row span:first-child {
-  font-size: 18px;
-  width: 24px;
+  font-size: 16px;
+  width: 20px;
   flex-shrink: 0;
 }
 
 /* Comparativa */
-.year-comparison { margin-bottom: 24px; }
+.year-comparison { margin-bottom: 48px; }
 
 .year-comparison h2 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: #1a1a2e;
-  margin: 0 0 12px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 16px 0;
 }
 
 .comparison-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 1px;
+  background: #e5e7eb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .comparison-card {
   background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  text-align: center;
+  padding: 24px;
 }
 
 .comparison-label {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 8px;
+  font-size: 11px;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
 }
 
 .comparison-values {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: baseline;
   gap: 8px;
   margin-bottom: 8px;
 }
 
 .current {
-  font-size: 22px;
-  font-weight: 700;
-  color: #0f3460;
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: -1px;
 }
 
-.vs { font-size: 12px; color: #aaa; }
-.last { font-size: 16px; color: #aaa; }
+.vs { font-size: 11px; color: #ccc; }
+.last { font-size: 18px; color: #ccc; font-weight: 600; }
 
 .diff {
   font-size: 13px;
@@ -222,40 +203,45 @@
 .bottom-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 24px;
 }
 
 .card {
   background: white;
   border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 28px 24px;
+  border: 1px solid #e5e7eb;
 }
 
 .card h2 {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: #1a1a2e;
-  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 24px 0;
 }
 
 .card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .card-header h2 { margin: 0; }
 
 .ver-todas {
-  font-size: 13px;
-  color: #0f3460;
+  font-size: 12px;
+  color: #888;
   text-decoration: none;
   font-weight: 600;
+  transition: color 0.2s;
 }
 
-/* Gráfico desktop */
+.ver-todas:hover { color: #1a1a2e; }
+
+/* Gráfico */
 .chart-container {
   width: 100%;
   overflow-x: hidden;
@@ -289,37 +275,37 @@
 
 .bar-num {
   font-size: 11px;
-  color: #555;
+  color: #aaa;
   margin-bottom: 4px;
 }
 
 .bar {
   width: 100%;
-  background: #0f3460;
-  border-radius: 4px 4px 0 0;
+  background: #1a1a2e;
+  border-radius: 3px 3px 0 0;
   min-height: 2px;
 }
 
 .bar-label {
   font-size: 11px;
-  color: #888;
+  color: #bbb;
   margin-top: 6px;
 }
 
-/* Lista actividades desktop */
+/* Lista actividades */
 .activity-item {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .activity-item:last-child { border-bottom: none; }
 
 .activity-icon {
-  font-size: 24px;
-  width: 36px;
+  font-size: 20px;
+  width: 32px;
   text-align: center;
 }
 
@@ -337,44 +323,41 @@
 
 .activity-meta {
   font-size: 12px;
-  color: #888;
+  color: #aaa;
   margin-top: 2px;
 }
 
 .activity-date {
   font-size: 12px;
-  color: #aaa;
+  color: #ccc;
 }
 
 .no-data {
   text-align: center;
-  color: #aaa;
+  color: #ccc;
   font-size: 14px;
   padding: 20px 0;
 }
 
-/* Mobile dashboard — oculto por defecto */
+/* Mobile */
 .mobile-dashboard { display: none; }
 
 .mobile-section-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
+  font-size: 11px;
+  font-weight: 700;
+  color: #aaa;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
 }
 
-/* ═══════════════════════════════════════
-   MÓVIL
-   ═══════════════════════════════════════ */
-
 @media (max-width: 768px) {
 
   .layout { margin-left: 0; }
-  .main { padding: 16px 16px 16px; }
+  .main { padding: 24px 16px 16px; }
 
-  /* Ocultar desktop */
+  .mobile-username { font-size: 24px; }
+
   .stats-grid,
   .year-comparison,
   .bottom-grid,
@@ -382,16 +365,13 @@
     display: none !important;
   }
 
-  /* Mostrar móvil */
   .mobile-dashboard { display: block; }
 
-  /* Header móvil ajustado */
   .mobile-header {
-    padding: 20px 0 8px;
-    margin-bottom: 12px;
+    padding: 12px 0 8px;
+    margin-bottom: 24px;
   }
 
-  /* 4 cards 2x2 */
   .mobile-stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -401,20 +381,21 @@
 
   .mobile-stat-card {
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     gap: 4px;
   }
 
-  .msc-icon { font-size: 18px; }
+  .msc-icon { font-size: 16px; }
 
   .msc-value {
     font-size: 20px;
-    font-weight: 700;
+    font-weight: 800;
     color: #1a1a2e;
+    letter-spacing: -0.5px;
     line-height: 1.1;
   }
 
@@ -425,7 +406,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Objetivo + Racha */
   .mobile-row-two {
     display: flex;
     gap: 10px;
@@ -435,9 +415,9 @@
   .mobile-goal-card {
     flex: 1;
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 14px 16px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
   }
 
   .goal-header {
@@ -447,7 +427,7 @@
     margin-bottom: 10px;
   }
 
-  .goal-label { font-size: 12px; color: #888; }
+  .goal-label { font-size: 12px; color: #aaa; }
 
   .goal-values {
     font-size: 12px;
@@ -456,25 +436,25 @@
   }
 
   .goal-bar-bg {
-    height: 6px;
+    height: 4px;
     background: #f0f0f0;
-    border-radius: 3px;
+    border-radius: 2px;
     overflow: hidden;
   }
 
   .goal-bar-fill {
     height: 100%;
-    background: #fc4c02;
-    border-radius: 3px;
+    background: #1a1a2e;
+    border-radius: 2px;
     transition: width 0.4s ease;
   }
 
   .mobile-streak-card {
     width: 80px;
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 14px 10px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -484,19 +464,19 @@
 
   .streak-num {
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 800;
     color: #1a1a2e;
+    letter-spacing: -1px;
     line-height: 1;
   }
 
   .streak-label { font-size: 11px; color: #aaa; }
 
-  /* Card genérica */
   .mobile-card {
     background: white;
-    border-radius: 14px;
+    border-radius: 12px;
     padding: 16px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e5e7eb;
     margin-bottom: 12px;
   }
 
@@ -505,19 +485,20 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a1a2e;
+    font-size: 11px;
+    font-weight: 700;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .mobile-ver-todas {
     font-size: 12px;
-    color: #fc4c02;
+    color: #888;
     text-decoration: none;
     font-weight: 600;
   }
 
-  /* Gráfico semanal */
   .mobile-bar-chart {
     display: flex;
     align-items: flex-end;
@@ -544,13 +525,13 @@
 
   .mobile-bar {
     width: 100%;
-    background: #e8edf5;
-    border-radius: 4px 4px 0 0;
+    background: #e5e7eb;
+    border-radius: 3px 3px 0 0;
     min-height: 3px;
     transition: height 0.3s ease;
   }
 
-  .mobile-bar.today { background: #fc4c02; }
+  .mobile-bar.today { background: #1a1a2e; }
 
   .mobile-bar-label {
     font-size: 10px;
@@ -559,11 +540,10 @@
   }
 
   .mobile-bar-label.today-label {
-    color: #fc4c02;
+    color: #1a1a2e;
     font-weight: 700;
   }
 
-  /* Última actividad */
   .mla-top {
     display: flex;
     align-items: center;
@@ -571,13 +551,13 @@
     margin-bottom: 14px;
   }
 
-  .mla-icon { font-size: 28px; }
+  .mla-icon { font-size: 24px; }
 
   .mla-info { display: flex; flex-direction: column; }
 
   .mla-name {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: #1a1a2e;
   }
 
@@ -603,8 +583,9 @@
 
   .mla-mval {
     font-size: 17px;
-    font-weight: 700;
+    font-weight: 800;
     color: #1a1a2e;
+    letter-spacing: -0.5px;
   }
 
   .mla-mlabel {
@@ -623,16 +604,3 @@
     display: inline-block;
   }
 }
-
-.btn-strava-text {
-  background: #fc4c02;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.btn-strava-text:hover { background: #e04302; }
