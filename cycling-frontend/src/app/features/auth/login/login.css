@@ -162,19 +162,3 @@ button:disabled {
   text-decoration: underline;
 }
 
-/* Móvil */
-@media (max-width: 600px) {
-  .brand-vertical {
-    display: none;
-  }
-
-  .card {
-    margin-right: 0;
-    margin: 20px;
-    padding: 36px 24px;
-  }
-
-  .page {
-    justify-content: center;
-  }
-}
